@@ -112,7 +112,7 @@ const SignIn = () => {
 					Sign In
 				</Button>
 				<Text mt={4} textAlign="center">
-					If you don't have an account,{' '}
+					If you don&apos;t have an account,{' '}
 					<Link color="teal.500" href="/sign-up">
 						sign up
 					</Link>{' '}

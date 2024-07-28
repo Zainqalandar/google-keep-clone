@@ -20,7 +20,7 @@ const ProtectedRoute = ({ children }) => {
     } else {
       setLoading(true);
     }
-  }, [pathname, router]);
+  }, [pathname, router, publicPages]);
 
   if (!loading) {
     return <Loading />;
