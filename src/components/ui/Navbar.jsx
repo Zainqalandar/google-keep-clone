@@ -25,9 +25,9 @@ const Navbar = () => {
 		try {
 			const isLogout = await authService.logout();
 			router.push('/sign-in');
+			notify('Logout successfully', 'success', 3000);
 			if (isLogout) {
 				console.log('Logout successfully');
-				notify('Logout successfully', 'success', 3000);
 			}
 		} catch (error) {
 			console.error(error);
