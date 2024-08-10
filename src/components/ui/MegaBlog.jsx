@@ -73,7 +73,7 @@ const MegaBlog = () => {
         <Text fontSize="lg" color={textColor}>
           Here are a few key principles to keep in mind when writing clean code:
           simplicity, consistency, and clarity. Simplicity ensures that your
-          code does what it's supposed to do without unnecessary complexity...
+          code does what it&apos;s supposed to do without unnecessary complexity...
         </Text>
         <Link color={accentColor} fontWeight="bold" href="#">
           Read more

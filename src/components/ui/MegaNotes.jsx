@@ -93,7 +93,7 @@ const MegaNotes = () => {
           </HStack>
           <Text fontSize="lg" lineHeight="tall" color={textColor}>
             This is a detailed note description. It provides an in-depth
-            overview of the note's content, allowing for a clearer
+            overview of the note&apos;s content, allowing for a clearer
             understanding...
           </Text>
         </Box>

@@ -3,10 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Loading from './Loading';
 
+const publicPages = ['/sign-in', '/sign-up'];
+
 const ProtectedRoute = ({ children }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const publicPages = ['/sign-in', '/sign-up'];
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -20,7 +21,7 @@ const ProtectedRoute = ({ children }) => {
     } else {
       setLoading(true);
     }
-  }, [pathname, router, publicPages]);
+  }, [pathname, router]);
 
   if (!loading) {
     return <Loading />;
