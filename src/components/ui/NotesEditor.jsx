@@ -10,7 +10,7 @@ import {
   HStack,
   IconButton,
   Divider,
-//   useColorModeValue,
+  useColorModeValue,
   FormLabel,
 } from '@chakra-ui/react';
 import {
@@ -22,14 +22,10 @@ import {
 } from '@chakra-ui/icons';
 
 const NotesEditor = () => {
-//   const bgColor = useColorModeValue('white', 'gray.800');
-//   const textColor = useColorModeValue('gray.700', 'gray.200');
-//   const accentColor = useColorModeValue('blue.600', 'blue.400');
-//   const inputBgColor = useColorModeValue('gray.50', 'gray.700');
-  const bgColor = 'gray.800';
-  const textColor = 'gray.200';
-  const accentColor = 'blue.400';
-  const inputBgColor = 'gray.700';
+  const bgColor = useColorModeValue('white', 'gray.800');
+  const textColor = useColorModeValue('gray.700', 'gray.200');
+  const accentColor = useColorModeValue('blue.600', 'blue.400');
+  const inputBgColor = useColorModeValue('gray.50', 'gray.700');
 
   return (
     <Box

@@ -3,13 +3,12 @@ import Sidebar from '@/components/sidebar';
 import Navbar from '@/components/ui/Navbar';
 import { Box, Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
-import { usePathname, useSearchParams } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 
 const SedbarWrapper = ({ children }) => {
     const pathname = usePathname()
     const publicRoutes = ['/sign-in', '/sign-up'];
     const isPublicRoute = publicRoutes.includes(pathname);
-    console.log('pathname', pathname);
     if (isPublicRoute) {
         return <>{children}</>;
     }
@@ -21,7 +20,6 @@ const SedbarWrapper = ({ children }) => {
 				<Navbar />
 				<chakra.main
 					p={6}
-					// bg="gray.50"
 				>
 					{children}
 				</chakra.main>

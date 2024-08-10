@@ -11,7 +11,7 @@ import {
   IconButton,
   Divider,
   Text,
-//   useColorModeValue,
+  useColorModeValue,
   Select,
   FormLabel,
 } from '@chakra-ui/react';
@@ -24,14 +24,10 @@ import { FaItalic } from "react-icons/fa";
 import { FaUnderline } from "react-icons/fa";
 
 const BlogEditor = () => {
-//   const bgColor = useColorModeValue('white', 'gray.800');
-//   const textColor = useColorModeValue('gray.700', 'gray.200');
-//   const accentColor = useColorModeValue('purple.600', 'purple.400');
-//   const inputBgColor = useColorModeValue('gray.50', 'gray.700');
-  const bgColor = 'gray.800';
-  const textColor = 'gray.200';
-  const accentColor = 'purple.400';
-  const inputBgColor = 'gray.700';
+  const bgColor = useColorModeValue('white', 'gray.800');
+  const textColor = useColorModeValue('gray.700', 'gray.200');
+  const accentColor = useColorModeValue('purple.600', 'purple.400');
+  const inputBgColor = useColorModeValue('gray.50', 'gray.700');
 
   return (
     <Box

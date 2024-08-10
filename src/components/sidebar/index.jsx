@@ -23,6 +23,7 @@ import { HiLightBulb } from "react-icons/hi2";
 import { ImBlogger2 } from "react-icons/im";
 import { MdEditNote } from "react-icons/md";
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const LinkItems = [
 	{ name: 'Notes', icon: HiLightBulb, href: '/home' },
@@ -88,14 +89,15 @@ const SidebarContent = ({ onClose, ...rest }) => {
 			</Flex>
 			{LinkItems.map((link) => (
 				<Link key={link.name} href={link.href}>
-					<NavItem icon={link.icon}>{link.name}</NavItem>
+					<NavItem href={link.href} icon={link.icon}>{link.name}</NavItem>
 				</Link>
 			))}
 		</Box>
 	);
 };
 
-const NavItem = ({ icon, children, ...rest }) => {
+const NavItem = ({ icon, href, children, ...rest }) => {
+	const pathName = usePathname()
 	return (
 		<Box
 			as="a"
@@ -108,6 +110,7 @@ const NavItem = ({ icon, children, ...rest }) => {
 				p="4"
 				mx="4"
 				borderRadius="lg"	
+				bg={pathName === href ? "cyan.400" : undefined}
 				role="group"
 				cursor="pointer"
 				_hover={{

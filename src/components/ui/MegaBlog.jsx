@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 import {
   Box,
@@ -9,16 +10,13 @@ import {
   Avatar,
   Divider,
   Link,
-//   useColorModeValue,
+  useColorModeValue,
 } from '@chakra-ui/react';
 
 const MegaBlog = () => {
-  const bgColor = 'gray.800';
-  const textColor = 'gray.200';
-  const accentColor = 'purple.400';
-//   const bgColor = useColorModeValue('white', 'gray.800');
-//   const textColor = useColorModeValue('gray.700', 'gray.200');
-//   const accentColor = useColorModeValue('purple.600', 'purple.400');
+  const bgColor = useColorModeValue('white', 'gray.800');
+  const textColor = useColorModeValue('gray.700', 'gray.200');
+  const accentColor = useColorModeValue('purple.600', 'purple.400');
 
   return (
     <Box

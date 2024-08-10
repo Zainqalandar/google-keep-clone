@@ -8,24 +8,18 @@ import {
   HStack,
   IconButton,
   SimpleGrid,
-//   useColorModeValue,
+  useColorModeValue,
   Button,
   Input,
 } from '@chakra-ui/react';
 import { AddIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons';
 
 const MegaNotes = () => {
-//   const bgColor = useColorModeValue('white', 'gray.800');
-//   const textColor = useColorModeValue('gray.700', 'gray.200');
-//   const accentColor = useColorModeValue('blue.600', 'blue.400');
-//   const noteBgColor = useColorModeValue('gray.100', 'gray.700');
-  const bgColor = 'gray.800';
-  const textColor = 'gray.200';
-  const accentColor = 'blue.400';
-  const noteBgColor = 'gray.700';
-
-  const borderColor = 'gray.600';
-  // const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const bgColor = useColorModeValue('white', 'gray.800');
+  const textColor = useColorModeValue('gray.700', 'gray.200');
+  const accentColor = useColorModeValue('blue.600', 'blue.400');
+  const noteBgColor = useColorModeValue('gray.100', 'gray.700');
+  const borderColor = useColorModeValue('gray.200', 'gray.600');
 
   return (
     <Box
