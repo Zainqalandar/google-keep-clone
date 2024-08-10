@@ -10,12 +10,14 @@ import {
 	VStack,
 	Text,
 	FormErrorMessage,
+	Image,
 } from '@chakra-ui/react';
 import { Link } from '@chakra-ui/next-js';
 import authService from '@/appwrite/auth';
 import { useForm } from 'react-hook-form';
-import { useNotification } from '@/provider/context/NotificationProvider';
+// import { useNotification } from '@/provider/context/NotificationProvider';
 import { useRouter } from 'next/navigation'
+import { useNotification } from '@/lib/provider/context/NotificationProvider';
 
 const SignUp = () => {
 	const {
@@ -51,6 +53,12 @@ const SignUp = () => {
 			borderRadius="lg"
 			boxShadow="lg"
 		>
+			<Image
+				margin="10px auto"
+				src="/google-keep.png"
+				alt="Logo"
+				boxSize="48px"
+			/>
 			<Heading as="h2" size="xl" textAlign="center" mb={6}>
 				Sign Up
 			</Heading>
@@ -65,6 +73,7 @@ const SignUp = () => {
 						{...register('username', {
 							required: 'Username is required',
 						})}
+						type="text"
 						placeholder="Enter your username"
 					/>
 					{errors.username && (

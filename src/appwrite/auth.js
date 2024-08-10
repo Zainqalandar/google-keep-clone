@@ -1,5 +1,5 @@
+import config from "@/lib/conf/config";
 import { Client, Account, ID } from "appwrite";
-import config from "@/conf/config";
 
 class AuthService {
     client = new Client()

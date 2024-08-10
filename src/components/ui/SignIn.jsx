@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	Box,
 	Button,
@@ -9,14 +9,14 @@ import {
 	Heading,
 	VStack,
 	Text,
-  FormErrorMessage
+	FormErrorMessage,
+	Image,
 } from '@chakra-ui/react';
 import authService from '@/appwrite/auth';
 import { Link } from '@chakra-ui/next-js';
 import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation'
-import { useNotification } from '@/provider/context/NotificationProvider';
-
+import { useRouter } from 'next/navigation';
+import { useNotification } from '@/lib/provider/context/NotificationProvider';
 
 const SignIn = () => {
 	const {
@@ -25,22 +25,31 @@ const SignIn = () => {
 		watch,
 		formState: { errors },
 	} = useForm();
-	const router = useRouter()
-	  const notify = useNotification();
+	const router = useRouter();
+	const notify = useNotification();
+	const [loading, setLoading] = useState(false);
 
-	const onSubmit =async (data) => {
+	const onSubmit = async (data) => {
+		setLoading(true);
 		try {
-			const isLoginSuccess = await authService.login(data.email, data.password);
+			let isLoginSuccess = await authService.login(
+				data.email,
+				data.password
+			);
 			if (isLoginSuccess) {
-				console.log('Login successfully');
+				console.log('Login successfully', isLoginSuccess);
+				const token = isLoginSuccess.$id; // Retrieve the session ID token
+				document.cookie =await `session_token=${token}; path=/; secure; HttpOnly; SameSite=Strict`;
 				notify('Login successfully', 'success', 3000);
 				router.push('/');
 			}
 		} catch (error) {
 			console.error('Error occure in login :: ', error);
 			notify(`${error.message}`, 'error', 3000);
+		} finally {
+			setLoading(false);
 		}
-	}
+	};
 	return (
 		<Box
 			maxW="md"
@@ -51,6 +60,12 @@ const SignIn = () => {
 			borderRadius="lg"
 			boxShadow="lg"
 		>
+			<Image
+				margin="10px auto"
+				src="/google-keep.png"
+				alt="Logo"
+				boxSize="48px"
+			/>
 			<Heading as="h2" size="xl" textAlign="center" mb={6}>
 				Sign In
 			</Heading>
@@ -108,6 +123,7 @@ const SignIn = () => {
 					colorScheme="teal"
 					width="full"
 					mt={4}
+					isLoading={loading}
 				>
 					Sign In
 				</Button>

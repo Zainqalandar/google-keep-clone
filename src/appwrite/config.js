@@ -1,5 +1,5 @@
+import config from '@/lib/conf/config';
 import { Client, ID, Databases, Storage, Query } from 'appwrite';
-import config from '@/conf/config';
 
 class Service {
 	client = new Client();

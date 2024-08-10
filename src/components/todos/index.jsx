@@ -30,7 +30,7 @@ const Todos = () => {
 	
 	return (
 		<>
-		{todos.map((todo, index) => (
+		{todos?.map((todo, index) => (
 				<Box
 				maxW="sm"
 				borderWidth="1px"
