@@ -7,15 +7,15 @@ import SedbarWrapper from '@/lib/wrappers/SedbarWrapper';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-	title: 'Todo app',
-	description: 'A simple todo app',
+	title: 'Todo notes',
+	description: 'Todo notes app',
 };
 
 export default function RootLayout({ children }) {
 	return (
 		<html lang="en">
 			<head>
-				<link rel="icon" href="/todo-icons.png" type="image/png" />
+				<link rel="icon" href="/google-keep.png" type="image/png" />
 			</head>
 			<body className={inter.className}>
 				<Providers>

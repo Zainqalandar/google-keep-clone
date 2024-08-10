@@ -20,13 +20,18 @@ import { MdModeEdit } from 'react-icons/md';
 import { HiArchiveBoxXMark } from 'react-icons/hi2';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { HiLightBulb } from "react-icons/hi2";
+import { ImBlogger2 } from "react-icons/im";
+import { MdEditNote } from "react-icons/md";
+import Link from 'next/link';
 
 const LinkItems = [
-	{ name: 'Notes', icon: HiLightBulb },
-	{ name: 'Reminders', icon: BsFillBellFill },
-	{ name: 'Edit labels', icon: MdModeEdit },
-	{ name: 'Archive', icon: HiArchiveBoxXMark },
-	{ name: 'Bin', icon: RiDeleteBin6Line },
+	{ name: 'Notes', icon: HiLightBulb, href: '/home' },
+	{ name: 'Edit Notes', icon: MdEditNote, href: '/edit-notes' },
+	{ name: 'Blog', icon: ImBlogger2, href: '/blog' },
+	{ name: 'Reminders', icon: BsFillBellFill, href: '/reminders' },
+	{ name: 'Edit labels', icon: MdModeEdit, href: '/edit-labels' },
+	{ name: 'Archive', icon: HiArchiveBoxXMark, href: '/archive' },
+	{ name: 'Bin', icon: RiDeleteBin6Line, href: '/bin' },
 ];
 
 export default function Sidebar() {
@@ -82,9 +87,9 @@ const SidebarContent = ({ onClose, ...rest }) => {
 				/>
 			</Flex>
 			{LinkItems.map((link) => (
-				<NavItem key={link.name} icon={link.icon}>
-					{link.name}
-				</NavItem>
+				<Link key={link.name} href={link.href}>
+					<NavItem icon={link.icon}>{link.name}</NavItem>
+				</Link>
 			))}
 		</Box>
 	);
@@ -94,7 +99,7 @@ const NavItem = ({ icon, children, ...rest }) => {
 	return (
 		<Box
 			as="a"
-			href="#"
+			// href="#"
 			style={{ textDecoration: 'none' }}
 			_focus={{ boxShadow: 'none' }}
 		>
