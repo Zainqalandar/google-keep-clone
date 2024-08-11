@@ -39,7 +39,11 @@ const SignIn = () => {
 			if (isLoginSuccess) {
 				console.log('Login successfully', isLoginSuccess);
 				const token = isLoginSuccess.$id; // Retrieve the session ID token
-				document.cookie =await `session_token=${token}; path=/; secure; HttpOnly; SameSite=Strict`;
+				// document.cookie =await `session_token=${token}; path=/; secure; HttpOnly; SameSite=Strict`;
+				const userId = isLoginSuccess.userId;
+				const email = isLoginSuccess.providerUid;
+				localStorage.setItem('userId', userId);
+				localStorage.setItem('user_email', email);
 				notify('Login successfully', 'success', 3000);
 				router.push('/');
 			}

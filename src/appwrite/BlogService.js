@@ -1,7 +1,7 @@
 import config from '@/lib/conf/config';
 import { Client, ID, Databases, Storage, Query } from 'appwrite';
 
-class Service {
+class BlogService {
 	client = new Client();
 	databases;
 	bucket;
@@ -12,18 +12,21 @@ class Service {
 		this.databases = new Databases(this.client);
 		this.bucket = new Storage(this.client);
 	}
-    async createTodo(title, description, status, tags) {
-        console.log(title, description, status, tags);
+    async createBlog(title, content, tags = [], status, slug, coverImageId) {
+        console.log(title, content, tags, status, slug, coverImageId);
+        const authorId = localStorage.getItem('userId');
         try {
             const response = await this.databases.createDocument(
                 config.databaseId,
-                config.collectionTaskId,
-                ID.unique(),
+                config.collectionBlogId,
+                slug,
                 {
                     title,
-                    description,
-                    status,
+                    content,
+                    authorId,
                     tags,
+                    status,
+                    coverImageId
                 }
             );
             return response;
@@ -32,7 +35,7 @@ class Service {
         }
     }
 
-    async getTodos(queries = [Query.equal("title", "description")]) {
+    async getBlogs(queries = [Query.equal("title", "content")]) {
         try {
             return await this.databases.listDocuments(
                 config.databaseId,
@@ -43,8 +46,21 @@ class Service {
             return false
         }
     }
+
+    async uploadBlogFile(file){
+        try {
+            return await this.bucket.createFile(
+                config.storageBlogId,
+                ID.unique(),
+                file
+            )
+        } catch (error) {
+            console.log("Appwrite serive :: uploadFile :: error", error);
+            return false
+        }
+    }
 }
 
-const service = new Service();
+const blogService = new BlogService();
 
-export default service;
+export default blogService;
