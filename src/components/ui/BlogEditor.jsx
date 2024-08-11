@@ -23,8 +23,11 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import styles
 import blogService from '@/appwrite/BlogService';
 import { TiUpload } from 'react-icons/ti';
+// import { Image } from '@chakra-ui/next-js';
+import Image from 'next/image';
 
 const BlogEditor = () => {
+	const [fileImage, setFileImage] = React.useState(null);
 	// Color Mode Values
 	const bgColor = useColorModeValue('white', 'gray.800');
 	const textColor = useColorModeValue('gray.700', 'gray.200');
@@ -78,16 +81,46 @@ const BlogEditor = () => {
 					} catch (error) {
 						console.error('Error creating blog post :: ', error);
 					}
-					
 				}
 			} catch (error) {
 				console.error('Error uploading file :: ', error);
 			}
 		}
-		
+	};
+
+	const getBlog = async (slug) => {
+		try {
+			const res = await blogService.getBlog(slug);
+			if (res) {
+				try {
+					const coverImg = await blogService.getBlogFile(
+						res.coverImageId
+					);
+					setFileImage(coverImg);
+					console.log('res', {
+						title: res.title,
+						content: res.content,
+						tags: res.tags,
+						status: res.status,
+					});
+					reset({
+						title: res.title,
+						content: res.content,
+						tags: res.tags,
+						status: res.status,
+					});
+				} catch (error) {
+					console.error('Error getting blog cover image :: ', error);
+				}
+			}
+		} catch (error) {
+			console.error('Error getting blog post :: ', error);
+		}
 	};
 
 	console.log('watch', watch());
+
+	console.log('fileImage', fileImage?.href);
 
 	return (
 		<Box
@@ -233,6 +266,7 @@ const BlogEditor = () => {
 							color={textColor}
 							bg={inputBgColor}
 							borderColor={textColor}
+							value={watch().tags[0]}
 							onChange={(e) => {
 								const value = e.target.value;
 								setValue('tags', [value]);
@@ -295,6 +329,25 @@ const BlogEditor = () => {
 					/>
 				</Box>
 
+				{fileImage && (
+					<Box>
+						<FormLabel>Image</FormLabel>
+						<Image
+							src={
+								fileImage
+									? fileImage.href
+									: '/dummy-post-horisontal-t.png'
+							}
+							alt="Blog Cover"
+							borderRadius="md"
+							boxShadow="md"
+							width={500}
+							height={300}
+							unoptimized // Disable the default Next.js image optimization
+						/>
+					</Box>
+				)}
+
 				{/* Preview Section */}
 				<VStack align="start" spacing={4} mb={6}>
 					<Heading size="lg" color={accentColor}>
@@ -325,7 +378,12 @@ const BlogEditor = () => {
 
 				{/* Action Buttons */}
 				<HStack justify="space-between">
-					<Button colorScheme="blue" size="lg" variant="outline">
+					<Button
+						onClick={() => getBlog('hello_wold')}
+						colorScheme="blue"
+						size="lg"
+						variant="outline"
+					>
 						Save Draft
 					</Button>
 					<Button type="submit" colorScheme="green" size="lg">

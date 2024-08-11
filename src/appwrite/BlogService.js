@@ -34,6 +34,19 @@ class BlogService {
             throw error;
         }
     }
+    async getBlog(slug) {
+        try {
+            return await this.databases.getDocument(
+                config.databaseId,
+                config.collectionBlogId,
+                slug
+            );
+        } catch (error) {
+            console.log("Appwrite serive :: getPost :: error", error);
+            return false;
+        }
+    }
+
 
     async getBlogs(queries = [Query.equal("title", "content")]) {
         try {
@@ -56,6 +69,14 @@ class BlogService {
             )
         } catch (error) {
             console.log("Appwrite serive :: uploadFile :: error", error);
+            return false
+        }
+    }
+    async getBlogFile(fileId){
+        try {
+            return await this.bucket.getFilePreview(config.storageBlogId,fileId)
+        } catch (error) {
+            console.log("Appwrite serive :: getFile :: error", error);
             return false
         }
     }
