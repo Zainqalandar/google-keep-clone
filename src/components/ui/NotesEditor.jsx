@@ -31,7 +31,7 @@ const NotesEditor = () => {
     <Box
       bg={bgColor}
       p={8}
-      borderRadius="md"
+      borderradius="md"
       boxShadow="xl"
       maxW="800px"
       mx="auto"

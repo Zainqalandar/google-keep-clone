@@ -34,7 +34,7 @@ const Todos = () => {
 				<Box
 				maxW="sm"
 				borderWidth="1px"
-				borderRadius="lg"
+				borderradius="lg"
 				overflow="hidden"
 				p={4}
 				m="auto"
@@ -58,7 +58,7 @@ const Todos = () => {
 						{todo?.tags.map((tag, index) => (
 							<Badge
 								key={index}
-								borderRadius="full"
+								borderradius="full"
 								px={2}
 								mr={2}
 								colorScheme="teal"

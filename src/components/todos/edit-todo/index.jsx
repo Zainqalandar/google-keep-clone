@@ -76,7 +76,7 @@ const EditTodo = ({handleRefresh}) => {
 			<Box
 				maxW="sm"
 				borderWidth="1px"
-				borderRadius="lg"
+				borderradius="lg"
 				overflow="hidden"
 				p={4}
 				m="auto"
@@ -116,7 +116,7 @@ const EditTodo = ({handleRefresh}) => {
 							{todo.tags.map((tag, index) => (
 								<Tag
 									key={index}
-									borderRadius="full"
+									borderradius="full"
 									variant="solid"
 									colorScheme="teal"
 									mb={1}

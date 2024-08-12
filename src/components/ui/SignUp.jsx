@@ -50,7 +50,7 @@ const SignUp = () => {
 			mt={8}
 			p={6}
 			borderWidth={1}
-			borderRadius="lg"
+			borderradius="lg"
 			boxShadow="lg"
 		>
 			<Image

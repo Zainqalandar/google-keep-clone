@@ -8,15 +8,15 @@ const EditNotes = () => {
 		<>
 			<Tabs isFitted variant="enclosed">
 				<TabList mb="1em">
-					<Tab>Notes editor</Tab>
 					<Tab>Blogs editor</Tab>
+					<Tab>Notes editor</Tab>
 				</TabList>
 				<TabPanels>
 					<TabPanel>
-						<NotesEditor />
+						<BlogEditor />
 					</TabPanel>
 					<TabPanel>
-						<BlogEditor />
+						<NotesEditor />
 					</TabPanel>
 				</TabPanels>
 			</Tabs>

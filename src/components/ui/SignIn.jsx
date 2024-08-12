@@ -41,10 +41,9 @@ const SignIn = () => {
 				const token = isLoginSuccess.$id; // Retrieve the session ID token
 				// document.cookie =await `session_token=${token}; path=/; secure; HttpOnly; SameSite=Strict`;
 				const userId = isLoginSuccess.userId;
-				const email = isLoginSuccess.providerUid;
 				localStorage.setItem('userId', userId);
-				localStorage.setItem('user_email', email);
-				notify('Login successfully', 'success', 3000);
+				const userDataString = JSON.stringify(isLoginSuccess)
+				localStorage.setItem('user_data', userDataString); // Convert object to JSON string				notify('Login successfully', 'success', 3000);
 				router.push('/');
 			}
 		} catch (error) {
@@ -61,7 +60,7 @@ const SignIn = () => {
 			mt={8}
 			p={6}
 			borderWidth={1}
-			borderRadius="lg"
+			borderradius="lg"
 			boxShadow="lg"
 		>
 			<Image
@@ -127,6 +126,7 @@ const SignIn = () => {
 					colorScheme="teal"
 					width="full"
 					mt={4}
+					loadingText="Signing In"
 					isLoading={loading}
 				>
 					Sign In

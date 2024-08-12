@@ -109,7 +109,7 @@ const NavItem = ({ icon, href, children, ...rest }) => {
 				align="center"
 				p="4"
 				mx="4"
-				borderRadius="lg"	
+				borderradius="lg"	
 				bg={pathName === href ? "cyan.400" : undefined}
 				role="group"
 				cursor="pointer"

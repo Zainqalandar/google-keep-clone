@@ -118,15 +118,12 @@ const BlogEditor = () => {
 		}
 	};
 
-	console.log('watch', watch());
-
-	console.log('fileImage', fileImage?.href);
 
 	return (
 		<Box
 			bg={bgColor}
 			p={8}
-			borderRadius="md"
+			borderradius="md"
 			boxShadow="xl"
 			maxW="1200px"
 			mx="auto"
@@ -238,7 +235,7 @@ const BlogEditor = () => {
 					bg={inputBgColor}
 					borderColor={textColor}
 					borderWidth="1px"
-					borderRadius="md"
+					borderradius="md"
 					p={4}
 				>
 					<ReactQuill
@@ -339,7 +336,7 @@ const BlogEditor = () => {
 									: '/dummy-post-horisontal-t.png'
 							}
 							alt="Blog Cover"
-							borderRadius="md"
+							borderradius="md"
 							boxShadow="md"
 							width={500}
 							height={300}
@@ -356,7 +353,7 @@ const BlogEditor = () => {
 					<Box
 						bg={inputBgColor}
 						p={6}
-						borderRadius="md"
+						borderradius="md"
 						borderWidth="1px"
 						borderColor={textColor}
 						w="full"
@@ -379,7 +376,7 @@ const BlogEditor = () => {
 				{/* Action Buttons */}
 				<HStack justify="space-between">
 					<Button
-						onClick={() => getBlog('hello_wold')}
+						onClick={() => getBlog('66ba5dec00350b232bdc')}
 						colorScheme="blue"
 						size="lg"
 						variant="outline"

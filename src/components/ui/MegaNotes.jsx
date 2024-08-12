@@ -25,7 +25,7 @@ const MegaNotes = () => {
     <Box
       bg={bgColor}
       p={8}
-      borderRadius="md"
+      borderradius="md"
       boxShadow="xl"
       maxW="1200px"
       mx="auto"
@@ -57,7 +57,7 @@ const MegaNotes = () => {
           key={note}
           bg={noteBgColor}
           p={8}
-          borderRadius="md"
+          borderradius="md"
           boxShadow="xl"
           borderWidth="1px"
           borderColor={borderColor}
@@ -95,7 +95,7 @@ const MegaNotes = () => {
     </SimpleGrid>
 
       {/* Add New Note Section */}
-      <Box mt={8} p={6} bg={noteBgColor} borderRadius="md" boxShadow="md">
+      <Box mt={8} p={6} bg={noteBgColor} borderradius="md" boxShadow="md">
         <Heading size="lg" mb={4} color={textColor}>
           Add a New Note
         </Heading>
