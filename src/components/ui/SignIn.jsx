@@ -41,7 +41,6 @@ const SignIn = () => {
 				const token = isLoginSuccess.$id; // Retrieve the session ID token
 				// document.cookie =await `session_token=${token}; path=/; secure; HttpOnly; SameSite=Strict`;
 				const userId = isLoginSuccess.userId;
-				localStorage.setItem('userId', userId);
 				const userDataString = JSON.stringify(isLoginSuccess)
 				localStorage.setItem('user_data', userDataString); // Convert object to JSON string				notify('Login successfully', 'success', 3000);
 				router.push('/');
@@ -53,92 +52,113 @@ const SignIn = () => {
 			setLoading(false);
 		}
 	};
+
+	const handleKeyDown = (event) => {
+		if (event.key === 'Enter') {
+			handleSubmit(onSubmit)();
+		}
+	};
 	return (
 		<Box
-			maxW="md"
-			mx="auto"
-			mt={8}
-			p={6}
-			borderWidth={1}
-			borderradius="lg"
-			boxShadow="lg"
+			height='100vh'
+			display='flex'
+			alignItems='center'
 		>
-			<Image
-				margin="10px auto"
-				src="/google-keep.png"
-				alt="Logo"
-				boxSize="48px"
-			/>
-			<Heading as="h2" size="xl" textAlign="center" mb={6}>
-				Sign In
-			</Heading>
-			<VStack spacing={4}>
-				<FormControl id="email" isRequired isInvalid={errors.email}>
-					<FormLabel>Email</FormLabel>
-					<Input
-						{...register('email', {
-							required: 'Email field is required',
-							pattern: {
-								value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-								message: 'Invalid email format',
-							},
-						})}
-						type="email"
-						placeholder="Enter your email"
-					/>
-					{errors.email && (
-						<FormErrorMessage>
-							{errors.email.message}
-						</FormErrorMessage>
-					)}
-				</FormControl>
-				<FormControl
-					id="password"
-					isRequired
-					isInvalid={errors.password}
-				>
-					<FormLabel>Password</FormLabel>
-					<Input
-						{...register('password', {
-							required: 'Password is required',
-							minLength: {
-								value: 8,
-								message:
-									'Password must be at least 8 characters long',
-							},
-							// pattern: {
-							// 	value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-							// 	message:
-							// 		'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
-							// },
-						})}
-						type="password"
-						placeholder="Enter your password"
-					/>
-					{errors.password && (
-						<FormErrorMessage>
-							{errors.password.message}
-						</FormErrorMessage>
-					)}
-				</FormControl>
-				<Button
-					onClick={handleSubmit(onSubmit)}
-					colorScheme="teal"
-					width="full"
-					mt={4}
-					loadingText="Signing In"
-					isLoading={loading}
-				>
+			<Box
+				width='100%'
+				maxW='600px'
+				height='590px'
+				mx="auto"
+				p={6}
+				borderWidth={1}
+				borderradius="lg"
+				boxShadow="lg"
+				mt='-100px'
+				// border='2px solid red'
+			>
+				<Image
+					margin="10px auto"
+					src="/google-keep.png"
+					alt="Logo"
+					boxSize="48px"
+				/>
+				<Heading as="h2" size="xl" textAlign="center" mb={6}>
 					Sign In
-				</Button>
-				<Text mt={4} textAlign="center">
-					If you don&apos;t have an account,{' '}
-					<Link color="teal.500" href="/sign-up">
-						sign up
-					</Link>{' '}
-					first.
-				</Text>
-			</VStack>
+				</Heading>
+				<VStack spacing={4}>
+					<FormControl maxW='600px' id="email" isRequired isInvalid={errors.email}>
+						<FormLabel>Email</FormLabel>
+						<Input
+							{...register('email', {
+								required: 'Email field is required',
+								pattern: {
+									value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+									message: 'Invalid email format',
+								},
+							})}
+							type="email"
+							placeholder="Enter your email"
+							padding='26px 15px'
+						/>
+						{errors.email && (
+							<FormErrorMessage>
+								{errors.email.message}
+							</FormErrorMessage>
+						)}
+					</FormControl>
+					<FormControl
+						id="password"
+						isRequired
+						isInvalid={errors.password}
+						maxW='600px'
+					>
+						<FormLabel>Password</FormLabel>
+						<Input
+							{...register('password', {
+								required: 'Password is required',
+								minLength: {
+									value: 8,
+									message:
+										'Password must be at least 8 characters long',
+								},
+								// pattern: {
+								// 	value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+								// 	message:
+								// 		'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
+								// },
+							})}
+							type="password"
+							placeholder="Enter your password"
+							padding='26px 15px'
+						/>
+						{errors.password && (
+							<FormErrorMessage>
+								{errors.password.message}
+							</FormErrorMessage>
+						)}
+					</FormControl>
+					<Button
+						onClick={handleSubmit(onSubmit)}
+                        handleKeyDown
+						colorScheme="teal"
+						width="full"
+						mt={4}
+						loadingText="Signing In"
+						isLoading={loading}
+						maxW='600px'
+						padding='26px 15px'
+					>
+						Sign In
+					</Button>
+					<Text mt={4} textAlign="center" fontSize='xl'>
+						If you don&apos;t have an account,{' '}
+						<Link color="teal.500" href="/sign-up">
+							sign up
+						</Link>{' '}
+						first.
+					</Text>
+				</VStack>
+			</Box>
 		</Box>
 	);
 };

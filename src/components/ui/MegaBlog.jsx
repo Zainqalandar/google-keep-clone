@@ -80,7 +80,7 @@ function getColorFromId(id) {
 					<div key={index}>
 						<VStack spacing={6} align="start">
 							<Image
-								src={blogService.getBlogFile(blog.coverImageId)}
+								src={blogService.getBlogFile(blog?.coverImageId)}
 								alt="Blog image"
 								borderradius="md"
 								w="full"
@@ -115,7 +115,7 @@ function getColorFromId(id) {
 						<VStack spacing={4} align="start">
 							<Text
 								dangerouslySetInnerHTML={{
-									__html: blog.content,
+									__html: blog?.content,
 								}}
 								fontSize="lg"
 								color={textColor}

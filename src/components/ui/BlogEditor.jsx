@@ -13,7 +13,7 @@ import {
 	Text,
 	useColorModeValue,
 	Select,
-	FormLabel,
+	FormLabel, useToast,
 } from '@chakra-ui/react';
 import { DeleteIcon, LinkIcon } from '@chakra-ui/icons';
 import { FaBold, FaItalic, FaUnderline } from 'react-icons/fa';
@@ -25,9 +25,12 @@ import blogService from '@/appwrite/BlogService';
 import { TiUpload } from 'react-icons/ti';
 // import { Image } from '@chakra-ui/next-js';
 import Image from 'next/image';
+import {useNotification} from "@/lib/provider/context/NotificationProvider";
 
 const BlogEditor = () => {
 	const [fileImage, setFileImage] = React.useState(null);
+	const notify = useNotification();
+	const toast = useToast();
 	// Color Mode Values
 	const bgColor = useColorModeValue('white', 'gray.800');
 	const textColor = useColorModeValue('gray.700', 'gray.200');
@@ -42,7 +45,6 @@ const BlogEditor = () => {
 		formState: { errors },
 		reset,
 		setValue,
-		file,
 	} = useForm({
 		defaultValues: {
 			title: '',
@@ -59,8 +61,8 @@ const BlogEditor = () => {
 
 	// Submit Handler
 	const onSubmit = async (data) => {
-		console.log(data);
 		if (data.file) {
+			console.log(data);
 			try {
 				const res = await blogService.uploadBlogFile(data.file);
 				const coverImageId = res.$id;
@@ -85,6 +87,10 @@ const BlogEditor = () => {
 			} catch (error) {
 				console.error('Error uploading file :: ', error);
 			}
+		}else {
+			notify(`file is required`, 'warning', 3000);
+			// ['success', 'error', 'warning', 'info']
+
 		}
 	};
 
