@@ -19,6 +19,7 @@ export default function RootLayout({ children }) {
 			</head>
 			<body className={inter.className}>
 				<Providers>
+				
 					<NotificationProvider>
 						<ProtectedRoute>
 							<SedbarWrapper>

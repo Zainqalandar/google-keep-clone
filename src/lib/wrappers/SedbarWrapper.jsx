@@ -9,7 +9,7 @@ const SedbarWrapper = ({ children }) => {
     const pathname = usePathname()
     const publicRoutes = ['/sign-in', '/sign-up'];
     const isPublicRoute = publicRoutes.includes(pathname);
-    if (isPublicRoute) {
+    if (isPublicRoute || pathname === '/') {
         return <>{children}</>;
     }
 
