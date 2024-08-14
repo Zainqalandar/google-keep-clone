@@ -1,4 +1,4 @@
-import BlogEditor from '@/components/ui/BlogEditor';
+// import BlogEditor from '@/components/ui/BlogEditor';
 import NotesEditor from '@/components/ui/NotesEditor';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import React from 'react';
@@ -13,7 +13,7 @@ const EditNotes = () => {
 				</TabList>
 				<TabPanels>
 					<TabPanel>
-						<BlogEditor />
+						{/* <BlogEditor /> */}
 					</TabPanel>
 					<TabPanel>
 						<NotesEditor />
