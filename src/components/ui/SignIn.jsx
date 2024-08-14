@@ -17,8 +17,11 @@ import { Link } from '@chakra-ui/next-js';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useNotification } from '@/lib/provider/context/NotificationProvider';
+import { getUserDetail } from '@/store/feature-user';
+import { useDispatch } from 'react-redux';
 
 const SignIn = () => {
+	const dispatch = useDispatch();
 	const {
 		register,
 		handleSubmit,
@@ -32,17 +35,14 @@ const SignIn = () => {
 	const onSubmit = async (data) => {
 		setLoading(true);
 		try {
-			let isLoginSuccess = await authService.login(
+			let activeUserData = await authService.login(
 				data.email,
 				data.password
 			);
-			if (isLoginSuccess) {
-				console.log('Login successfully', isLoginSuccess);
-				const token = isLoginSuccess.$id; // Retrieve the session ID token
-				// document.cookie =await `session_token=${token}; path=/; secure; HttpOnly; SameSite=Strict`;
-				const userId = isLoginSuccess.userId;
-				const userDataString = JSON.stringify(isLoginSuccess)
-				localStorage.setItem('user_data', userDataString); // Convert object to JSON string				notify('Login successfully', 'success', 3000);
+			if (activeUserData) {
+				console.log('Login successfully', activeUserData);
+				dispatch(getUserDetail(activeUserData));
+				const userDataString = JSON.stringify(activeUserData);
 				router.push('/');
 			}
 		} catch (error) {
@@ -139,7 +139,6 @@ const SignIn = () => {
 					</FormControl>
 					<Button
 						onClick={handleSubmit(onSubmit)}
-                        handleKeyDown
 						colorScheme="teal"
 						width="full"
 						mt={4}

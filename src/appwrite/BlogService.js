@@ -12,10 +12,8 @@ class BlogService {
 		this.databases = new Databases(this.client);
 		this.bucket = new Storage(this.client);
 	}
-	async createBlog(title, content, tags = [], status, slug, coverImageId) {
+	async createBlog(title, content, authorId, tags = [], status, slug, coverImageId, name) {
 		console.log(title, content, tags, status, slug, coverImageId);
-		const userDataString = localStorage.getItem('user_data');
-		const userData = JSON.parse(userDataString);
 
 		try {
 			const response = await this.databases.createDocument(
@@ -25,11 +23,11 @@ class BlogService {
 				{
 					title,
 					content,
-					authorId: userData.userId,
+					authorId,
 					tags,
 					status,
 					coverImageId,
-					// name: userData.email
+					name
 				}
 			);
 			return response;

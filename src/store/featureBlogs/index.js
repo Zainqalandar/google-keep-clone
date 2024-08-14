@@ -13,10 +13,10 @@ export const fetchBlogs = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const response = await blogService.getBlogs();
-            console.log("response", response.documents);
             return response.documents;
         } catch (error) {
-            return rejectWithValue(error.response.data);
+            console.log("Error fetching blogs", error);
+            return rejectWithValue(error.message);
         }
     }
 );
@@ -32,7 +32,6 @@ const featureBlogsSlice = createSlice({
                 state.error = null;
             })
             .addCase(fetchBlogs.fulfilled, (state, action) => {
-                console.log("action.payload", action);
                 state.loading = false;
                 state.blogs = action.payload;
             })

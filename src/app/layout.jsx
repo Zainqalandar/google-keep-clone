@@ -21,11 +21,11 @@ export default function RootLayout({ children }) {
 				<Providers>
 				
 					<NotificationProvider>
-						{/*<ProtectedRoute>*/}
+						{/* <ProtectedRoute> */}
 							<SedbarWrapper>
 							{children}
 							</SedbarWrapper>
-						{/*</ProtectedRoute>*/}
+						{/* </ProtectedRoute> */}
 					</NotificationProvider>
 				</Providers>
 			</body>

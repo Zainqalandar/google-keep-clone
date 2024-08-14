@@ -16,10 +16,10 @@ import {
 	useStatStyles,
 } from '@chakra-ui/react';
 import blogService from '@/appwrite/BlogService';
-import { formatDate } from '@/lib/utils/resuseableFunctions';
-import BlogSkeleton from './BlogSkeleton';
+import { formatDate, getColorFromId, getNameFromEmail } from '@/lib/utils/resuseableFunctions';
+import BlogSkeleton from '../ui/BlogSkeleton';
 
-const MegaBlog = () => {
+const Blogs = () => {
 	const bgColor = useColorModeValue('white', 'gray.800');
 	const textColor = useColorModeValue('gray.700', 'gray.200');
 	const accentColor = useColorModeValue('purple.600', 'purple.400');
@@ -33,43 +33,8 @@ const MegaBlog = () => {
 		dispatch(fetchBlogs());
 	}, [dispatch]);
 
-	// const userDataString = localStorage.getItem('user_data');
-	// const userData = JSON.parse(userDataString);
 
-	function getNameFromEmail(email) {
-		const username = email.split('@')[0];
-		const capitalizedUsername =
-			username.charAt(0).toUpperCase() + username.slice(1);
-		return capitalizedUsername;
-	}
 
-	function getColorFromId(id) {
-		function hashString(str) {
-			let hash = 0;
-			for (let i = 0; i < str.length; i++) {
-				hash = str.charCodeAt(i) + ((hash << 5) - hash);
-			}
-			return hash;
-		}
-
-		const colors = [
-			'#FF5733',
-			'#33FF57',
-			'#3357FF',
-			'#FF33A1',
-			'#A133FF',
-			'#33FFF5',
-			'#FF8C33',
-			'#8CFF33',
-			'#338CFF',
-			'#FF338C',
-		];
-
-		const hash = hashString(id);
-		const colorIndex = Math.abs(hash) % colors.length;
-
-		return colors[colorIndex];
-	}
 
 	return (
 		<Box
@@ -81,7 +46,6 @@ const MegaBlog = () => {
 			mx="auto"
 			my={10}
 		>
-			{/* Blog Header */}
 			{loading ? (
 				<BlogSkeleton />
 			) : (
@@ -155,34 +119,8 @@ const MegaBlog = () => {
 						.reverse()}
 				</>
 			)}
-
-			{/* Related Posts */}
-			<Heading size="lg" mb={4} color={accentColor}>
-				Related Posts
-			</Heading>
-			<HStack spacing={4} overflowX="auto">
-				{[1, 2, 3].map((post) => (
-					<Box key={post} w="300px">
-						<Image
-							src={`/zain-qalandar.jpg`}
-							alt="Related post image"
-							borderradius="md"
-							objectFit="cover"
-						/>
-						<Text
-							fontSize="md"
-							mt={2}
-							fontWeight="bold"
-							color={textColor}
-							noOfLines={2}
-						>
-							How to Refactor Your Code for Better Readability
-						</Text>
-					</Box>
-				))}
-			</HStack>
 		</Box>
 	);
 };
 
-export default MegaBlog;
+export default Blogs;
