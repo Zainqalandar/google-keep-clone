@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const cookieFallback = localStorage.getItem("cookieFallback");
-const parsedCookieFallback = cookieFallback ? JSON.parse(cookieFallback) : {};
-
+let parsedCookieFallback = {};
+if (typeof window !== "undefined") {
+    const cookieFallback = localStorage.getItem("cookieFallback");
+    parsedCookieFallback = cookieFallback ? JSON.parse(cookieFallback) : {};
+}
 const initialState = {
     UserDetail: Array.isArray(parsedCookieFallback) && parsedCookieFallback.length === 0 ? {} : parsedCookieFallback,
     loading: false,
