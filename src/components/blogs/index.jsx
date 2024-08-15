@@ -27,7 +27,6 @@ const Blogs = () => {
 	const dispatch = useDispatch();
 	const { blogs, error, loading } = useSelector((state) => state.blog);
 
-	console.log('loading', loading)
 
 	useEffect(() => {
 		dispatch(fetchBlogs());

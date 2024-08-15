@@ -21,7 +21,6 @@ const SedbarWrapper = ({ children }) => {
 	// we only show Navbar at path / and /my-blogs
 
 	if ((pathname === '/' || pathname === '/my-blogs')) {
-		console.log(pathname, 'pathname')
 		return (
 			<>
 				<DashbordNav />
