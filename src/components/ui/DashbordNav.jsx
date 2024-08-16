@@ -27,12 +27,10 @@ import { FaMoon, FaSun } from 'react-icons/fa';
 import { useColorMode } from '@chakra-ui/react';
 import { useViewportScroll } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import authService from '@/appwrite/auth';
 import { useNotification } from '@/lib/provider/context/NotificationProvider';
 import { getUserDetail } from '@/store/feature-user';
-
-
 
 const DashbordNav = () => {
 	const { toggleColorMode: toggleMode } = useColorMode();
@@ -60,7 +58,6 @@ const DashbordNav = () => {
 			notify('Logout successfully', 'success', 3000);
 			if (isLogout) {
 				console.log('Logout successfully');
-
 			}
 		} catch (error) {
 			console.error(error);
@@ -376,11 +373,13 @@ const DashbordNav = () => {
 							<Box onClick={() => router.push('/')}>
 								<HStack>
 									{/* <Logo /> */}
-									<Image
-										src="/google-keep.png"
-										alt="Logo"
-										boxSize="40px"
-									/>
+									<Link href="/">
+										<Image
+											src="/google-keep.png"
+											alt="Logo"
+											boxSize="40px"
+										/>
+									</Link>
 								</HStack>
 							</Box>
 						</Flex>
