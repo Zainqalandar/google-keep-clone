@@ -31,6 +31,7 @@ export const NotificationProvider = ({ children }) => {
       }
     };
   }, [timeoutId]);
+  
 
   return (
     <NotificationContext.Provider value={notify}>

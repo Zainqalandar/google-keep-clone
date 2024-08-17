@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import nookies from 'nookies';
 import {
 	Box,
 	Button,
@@ -40,10 +41,17 @@ const SignIn = () => {
 				data.password
 			);
 			if (activeUserData) {
-				console.log('Login successfully', activeUserData);
-				dispatch(getUserDetail(activeUserData));
-				const userDataString = JSON.stringify(activeUserData);
-				router.push('/');
+				authService
+					.getCurrentUser()
+					.then((userData) => {
+						if (userData) {
+							nookies.set(null, 'userId', userData.$id, { path: '/' });
+							dispatch(getUserDetail(userData));
+							router.push('/');
+						} else {
+							dispatch(getUserDetail({}));
+						}
+					})
 			}
 		} catch (error) {
 			console.error('Error occure in login :: ', error);
@@ -59,21 +67,17 @@ const SignIn = () => {
 		}
 	};
 	return (
-		<Box
-			height='100vh'
-			display='flex'
-			alignItems='center'
-		>
+		<Box height="100vh" display="flex" alignItems="center">
 			<Box
-				width='100%'
-				maxW='600px'
-				height='590px'
+				width="100%"
+				maxW="600px"
+				height="590px"
 				mx="auto"
 				p={6}
 				borderWidth={1}
 				borderradius="lg"
 				boxShadow="lg"
-				mt='-100px'
+				mt="-100px"
 				// border='2px solid red'
 			>
 				<Image
@@ -86,7 +90,12 @@ const SignIn = () => {
 					Sign In
 				</Heading>
 				<VStack spacing={4}>
-					<FormControl maxW='600px' id="email" isRequired isInvalid={errors.email}>
+					<FormControl
+						maxW="600px"
+						id="email"
+						isRequired
+						isInvalid={errors.email}
+					>
 						<FormLabel>Email</FormLabel>
 						<Input
 							{...register('email', {
@@ -98,7 +107,7 @@ const SignIn = () => {
 							})}
 							type="email"
 							placeholder="Enter your email"
-							padding='26px 15px'
+							padding="26px 15px"
 						/>
 						{errors.email && (
 							<FormErrorMessage>
@@ -110,7 +119,7 @@ const SignIn = () => {
 						id="password"
 						isRequired
 						isInvalid={errors.password}
-						maxW='600px'
+						maxW="600px"
 					>
 						<FormLabel>Password</FormLabel>
 						<Input
@@ -129,7 +138,7 @@ const SignIn = () => {
 							})}
 							type="password"
 							placeholder="Enter your password"
-							padding='26px 15px'
+							padding="26px 15px"
 						/>
 						{errors.password && (
 							<FormErrorMessage>
@@ -144,12 +153,12 @@ const SignIn = () => {
 						mt={4}
 						loadingText="Signing In"
 						isLoading={loading}
-						maxW='600px'
-						padding='26px 15px'
+						maxW="600px"
+						padding="26px 15px"
 					>
 						Sign In
 					</Button>
-					<Text mt={4} textAlign="center" fontSize='xl'>
+					<Text mt={4} textAlign="center" fontSize="xl">
 						If you don&apos;t have an account,{' '}
 						<Link color="teal.500" href="/sign-up">
 							sign up

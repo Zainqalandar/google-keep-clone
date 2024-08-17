@@ -12,8 +12,8 @@ class BlogService {
 		this.databases = new Databases(this.client);
 		this.bucket = new Storage(this.client);
 	}
-	async createBlog(title, content, authorId, tags = [], status, slug, coverImageId, name) {
-		console.log(title, content, tags, status, slug, coverImageId);
+	async createBlog({title, content, authorId, tags = [], status, slug, coverImageId, name}) {
+		console.log("CreateBlog ::" , {title, content, authorId, tags, status, slug, coverImageId, name});
 
 		try {
 			const response = await this.databases.createDocument(

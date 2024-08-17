@@ -1,15 +1,28 @@
-import { createSlice } from "@reduxjs/toolkit";
+import authService from "@/appwrite/auth";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import nookies from 'nookies';
 
-let parsedCookieFallback = {};
-if (typeof window !== "undefined") {
-    const cookieFallback = localStorage.getItem("cookieFallback");
-    parsedCookieFallback = cookieFallback ? JSON.parse(cookieFallback) : {};
-}
 const initialState = {
-    UserDetail: Array.isArray(parsedCookieFallback) && parsedCookieFallback.length === 0 ? {} : parsedCookieFallback,
-    loading: false,
-    isActive: Array.isArray(parsedCookieFallback) && parsedCookieFallback.length === 0 ? false : true,
+    userData: {},
+    loading: true,
+    isActive: false,
 };
+
+export const fetchUserDetail = createAsyncThunk(
+    "featureUser/fetchUser",
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await authService.getCurrentUser();
+            if (response && response.$id) {
+                nookies.set(null, 'userId', response.$id, { path: '/' });
+            }
+            return response
+        } catch (error) {
+            console.log("Error fetching UserDetails", error);
+            return rejectWithValue(error);
+        }
+    }
+);
 
 
 
@@ -18,14 +31,30 @@ const featureUserSlice = createSlice({
     initialState,
     reducers: {
         getUserDetail: (state, action) => {
-            state.UserDetail = action.payload;
-            if (action.payload.userId) {
+            state.userData = action.payload;
+            if (action.payload?.$id) {
                 state.isActive = true;   
             }else {
                 state.isActive = false;
             }
         },
 
+    },
+
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchUserDetail.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(fetchUserDetail.fulfilled, (state, action) => {
+                state.loading = false;
+                state.isActive = true;
+                state.userData = action.payload;
+            })
+            .addCase(fetchUserDetail.rejected, (state) => {
+                state.loading = false;
+                state.isActive = false;
+            });
     },
 });
 

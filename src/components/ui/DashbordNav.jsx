@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import nookies from 'nookies';
 import {
 	chakra,
 	Box,
@@ -48,14 +49,18 @@ const DashbordNav = () => {
 	const cl = useColorModeValue('gray.800', 'white');
 	const mobileNav = useDisclosure();
 	const router = useRouter();
+	const allUserData = useSelector((state) => state);
+	console.log('allUserData', allUserData)
 	const isActive = useSelector((state) => state.user.isActive);
 	const dispatch = useDispatch();
 
 	const handleLogout = async () => {
 		try {
 			const isLogout = await authService.logout();
+			nookies.destroy(null, 'userId');
 			dispatch(getUserDetail({}));
 			notify('Logout successfully', 'success', 3000);
+			router.push('/sign-in');
 			if (isLogout) {
 				console.log('Logout successfully');
 			}

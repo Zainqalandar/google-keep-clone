@@ -20,10 +20,9 @@ import { FaBold, FaItalic, FaUnderline } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // Import styles
+import 'react-quill/dist/quill.snow.css';
 import blogService from '@/appwrite/BlogService';
 import { TiUpload } from 'react-icons/ti';
-// import { Image } from '@chakra-ui/next-js';
 import Image from 'next/image';
 import {useNotification} from "@/lib/provider/context/NotificationProvider";
 
@@ -71,14 +70,8 @@ const BlogEditor = () => {
 				if (data.coverImageId) {
 					console.log('data', data);
 					try {
-						await blogService.createBlog(
-							data.title,
-							data.content,
-							data.tags,
-							data.status,
-							data.slug,
-							data.coverImageId
-						);
+						await blogService.createBlog(data);
+						notify(`Blog post created successfully`, 'success', 3000);
 						reset();
 					} catch (error) {
 						console.error('Error creating blog post :: ', error);
