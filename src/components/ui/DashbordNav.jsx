@@ -49,15 +49,17 @@ const DashbordNav = () => {
 	const cl = useColorModeValue('gray.800', 'white');
 	const mobileNav = useDisclosure();
 	const router = useRouter();
+	const [loading, setLoading] = React.useState(false);
 	const allUserData = useSelector((state) => state);
-	console.log('allUserData', allUserData)
+	console.log('allUserData', allUserData);
 	const isActive = useSelector((state) => state.user.isActive);
 	const dispatch = useDispatch();
 
 	const handleLogout = async () => {
 		try {
+			setLoading(true);
 			const isLogout = await authService.logout();
-			nookies.destroy(null, 'userId');
+			nookies.destroy(null, 'userId', { path: '/' });
 			dispatch(getUserDetail({}));
 			notify('Logout successfully', 'success', 3000);
 			router.push('/sign-in');
@@ -67,6 +69,8 @@ const DashbordNav = () => {
 		} catch (error) {
 			console.error(error);
 			notify(`${error.message}`, 'error', 3000);
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -472,6 +476,8 @@ const DashbordNav = () => {
 							>
 								{isActive ? (
 									<Button
+										isLoading={loading}
+										loadingText="Logout"
 										onClick={() => handleLogout()}
 										colorScheme="red"
 										variant="solid"

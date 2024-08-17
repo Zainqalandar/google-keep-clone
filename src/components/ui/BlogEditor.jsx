@@ -13,7 +13,8 @@ import {
 	Text,
 	useColorModeValue,
 	Select,
-	FormLabel, useToast,
+	FormLabel,
+	useToast,
 } from '@chakra-ui/react';
 import { DeleteIcon, LinkIcon } from '@chakra-ui/icons';
 import { FaBold, FaItalic, FaUnderline } from 'react-icons/fa';
@@ -24,10 +25,13 @@ import 'react-quill/dist/quill.snow.css';
 import blogService from '@/appwrite/BlogService';
 import { TiUpload } from 'react-icons/ti';
 import Image from 'next/image';
-import {useNotification} from "@/lib/provider/context/NotificationProvider";
+import { useNotification } from '@/lib/provider/context/NotificationProvider';
+import { useSelector } from 'react-redux';
+import { getNameFromEmail } from '@/lib/utils/resuseableFunctions';
 
 const BlogEditor = () => {
 	const [fileImage, setFileImage] = React.useState(null);
+	const [loading, setLoading] = React.useState(false);
 	const notify = useNotification();
 	const toast = useToast();
 	// Color Mode Values
@@ -35,6 +39,8 @@ const BlogEditor = () => {
 	const textColor = useColorModeValue('gray.700', 'gray.200');
 	const accentColor = useColorModeValue('purple.600', 'purple.400');
 	const inputBgColor = useColorModeValue('gray.50', 'gray.700');
+
+	const user = useSelector((state) => state.user.userData);
 
 	// Form Hook for handling form data
 	const {
@@ -58,32 +64,44 @@ const BlogEditor = () => {
 		return str.toLowerCase().replace(/ /g, '_');
 	}
 
+	console.log('user.$id', user.$id);
+	console.log('user.name', getNameFromEmail(user.name));
+
 	// Submit Handler
 	const onSubmit = async (data) => {
 		if (data.file) {
 			console.log(data);
+			setLoading(true);
 			try {
 				const res = await blogService.uploadBlogFile(data.file);
 				const coverImageId = res.$id;
 				data.coverImageId = coverImageId;
 				data.slug = formatString(data.title);
+				data.authorId = user.$id;
+				data.name = getNameFromEmail(user.name);
 				if (data.coverImageId) {
 					console.log('data', data);
 					try {
 						await blogService.createBlog(data);
-						notify(`Blog post created successfully`, 'success', 3000);
+						notify(
+							`Blog post created successfully`,
+							'success',
+							3000
+						);
 						reset();
 					} catch (error) {
 						console.error('Error creating blog post :: ', error);
+						notify(`Error creating blog post`, 'error', 3000);
+					} finally {
+						setLoading(false);
 					}
 				}
 			} catch (error) {
 				console.error('Error uploading file :: ', error);
 			}
-		}else {
+		} else {
 			notify(`file is required`, 'warning', 3000);
 			// ['success', 'error', 'warning', 'info']
-
 		}
 	};
 
@@ -116,7 +134,6 @@ const BlogEditor = () => {
 			console.error('Error getting blog post :: ', error);
 		}
 	};
-
 
 	return (
 		<Box
@@ -382,7 +399,13 @@ const BlogEditor = () => {
 					>
 						Save Draft
 					</Button>
-					<Button type="submit" colorScheme="green" size="lg">
+					<Button
+						isLoading={loading}
+						loadingText="Publishing..."
+						type="submit"
+						colorScheme="green"
+						size="lg"
+					>
 						Publish Post
 					</Button>
 					<IconButton

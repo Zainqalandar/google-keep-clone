@@ -12,8 +12,26 @@ class BlogService {
 		this.databases = new Databases(this.client);
 		this.bucket = new Storage(this.client);
 	}
-	async createBlog({title, content, authorId, tags = [], status, slug, coverImageId, name}) {
-		console.log("CreateBlog ::" , {title, content, authorId, tags, status, slug, coverImageId, name});
+	async createBlog({
+		title,
+		content,
+		authorId,
+		tags = [],
+		status,
+		slug,
+		coverImageId,
+		name,
+	}) {
+		console.log('CreateBlog ::', {
+			title,
+			content,
+			authorId,
+			tags,
+			status,
+			slug,
+			coverImageId,
+			name,
+		});
 
 		try {
 			const response = await this.databases.createDocument(
@@ -27,7 +45,7 @@ class BlogService {
 					tags,
 					status,
 					coverImageId,
-					name
+					name,
 				}
 			);
 			return response;
@@ -48,6 +66,19 @@ class BlogService {
 		}
 	}
 
+	async deleteBlog(collectionId) {
+		try {
+			return await this.databases.deleteDocument(
+				config.databaseId,
+				config.collectionBlogId,
+				collectionId
+			);
+		} catch (error) {
+			console.log('Appwrite serive :: deletePost :: error', error);
+			return false;
+		}
+	}
+
 	async getBlogs(queries = [Query.equal('title', 'content')]) {
 		try {
 			return await this.databases.listDocuments(
@@ -56,6 +87,15 @@ class BlogService {
 			);
 		} catch (error) {
 			console.log('Appwrite serive :: getPosts :: error', error);
+			return false;
+		}
+	}
+
+	async deleteBlogFile(fileId) {
+		try {
+			return await this.bucket.deleteFile(config.storageBlogId, fileId);
+		} catch (error) {
+			console.log('Appwrite serive :: deleteFile :: error', error);
 			return false;
 		}
 	}

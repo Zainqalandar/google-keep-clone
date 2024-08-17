@@ -47,6 +47,7 @@ const SignIn = () => {
 						if (userData) {
 							nookies.set(null, 'userId', userData.$id, { path: '/' });
 							dispatch(getUserDetail(userData));
+							notify('Logged in successfully', 'success', 3000);
 							router.push('/');
 						} else {
 							dispatch(getUserDetail({}));

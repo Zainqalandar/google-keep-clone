@@ -1,6 +1,8 @@
 import authService from '@/appwrite/auth';
 import { useNotification } from '@/lib/provider/context/NotificationProvider';
+import { getColorFromId, getNameFromEmail } from '@/lib/utils/resuseableFunctions';
 import { getUserDetail } from '@/store/feature-user';
+import nookies from 'nookies';
 import {
 	IconButton,
 	Avatar,
@@ -18,27 +20,28 @@ import {
 	Image,
 } from '@chakra-ui/react';
 import { FiMenu, FiBell, FiChevronDown } from 'react-icons/fi';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const MobileNav = ({ onOpen, ...rest }) => {
-    const notify = useNotification();
-    const dispatch = useDispatch();
+	const notify = useNotification();
+	const dispatch = useDispatch();
+	const user = useSelector((state) => state.user.userData);
 
-    const handleLogout = async () => {
+	const handleLogout = async () => {
 		try {
 			const isLogout = await authService.logout();
+			nookies.destroy(null, 'userId', { path: '/' });
 			dispatch(getUserDetail({}));
 			notify('Logout successfully', 'success', 3000);
+			router.push('/sign-in');
 			if (isLogout) {
 				console.log('Logout successfully');
-
 			}
 		} catch (error) {
 			console.error(error);
 			notify(`${error.message}`, 'error', 3000);
-		}
+		} 
 	};
-
 
 	return (
 		<Flex
@@ -60,7 +63,12 @@ const MobileNav = ({ onOpen, ...rest }) => {
 				icon={<FiMenu />}
 			/>
 
-			<Image  display={{ base: 'flex', md: 'none' }} src="/google-keep.png" alt="Logo" boxSize="40px" />
+			<Image
+				display={{ base: 'flex', md: 'none' }}
+				src="/google-keep.png"
+				alt="Logo"
+				boxSize="40px"
+			/>
 
 			<HStack spacing={{ base: '0', md: '6' }}>
 				<IconButton
@@ -78,10 +86,10 @@ const MobileNav = ({ onOpen, ...rest }) => {
 						>
 							<HStack>
 								<Avatar
-									size={'sm'}
-									src={
-										'https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-									}
+									src="/zain.qalandar.jpg"
+									name={getNameFromEmail(user?.name)}
+									size="md"
+									bg={getColorFromId(user?.$id)}
 								/>
 								<VStack
 									display={{ base: 'none', md: 'flex' }}
@@ -89,7 +97,9 @@ const MobileNav = ({ onOpen, ...rest }) => {
 									spacing="1px"
 									ml="2"
 								>
-									<Text fontSize="sm">Justina Clark</Text>
+									<Text fontSize="sm">
+										{getNameFromEmail(user?.name)}
+									</Text>
 									<Text fontSize="xs" color="gray.600">
 										Admin
 									</Text>
@@ -110,9 +120,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
 							<MenuItem>Settings</MenuItem>
 							<MenuItem>Billing</MenuItem>
 							<MenuDivider />
-							<MenuItem 
-                                onClick={handleLogout}
-                            >Sign out</MenuItem>
+							<MenuItem onClick={handleLogout}>Sign out</MenuItem>
 						</MenuList>
 					</Menu>
 				</Flex>
