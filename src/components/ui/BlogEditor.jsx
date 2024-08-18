@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
 	Box,
 	Heading,
@@ -14,12 +14,10 @@ import {
 	useColorModeValue,
 	Select,
 	FormLabel,
-	useToast,
 } from '@chakra-ui/react';
 import { DeleteIcon, LinkIcon } from '@chakra-ui/icons';
 import { FaBold, FaItalic, FaUnderline } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
-
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import blogService from '@/appwrite/BlogService';
@@ -29,22 +27,19 @@ import { useNotification } from '@/lib/provider/context/NotificationProvider';
 import { useSelector } from 'react-redux';
 import { getNameFromEmail } from '@/lib/utils/resuseableFunctions';
 import LoadingPopup from './LoadingPopup';
+import { useRouter } from 'next/navigation';
 
-const BlogEditor = ({blodId}) => {
+const BlogEditor = ({blogId}) => {
 	const [fileImage, setFileImage] = React.useState(null);
 	const [loading, setLoading] = React.useState(false);
 	const [popupLoading, setPopupLoading] = React.useState(true);
 	const notify = useNotification();
-	const toast = useToast();
-	// Color Mode Values
 	const bgColor = useColorModeValue('white', 'gray.800');
 	const textColor = useColorModeValue('gray.700', 'gray.200');
 	const accentColor = useColorModeValue('purple.600', 'purple.400');
 	const inputBgColor = useColorModeValue('gray.50', 'gray.700');
-
 	const user = useSelector((state) => state.user.userData);
-
-	// Form Hook for handling form data
+	const router = useRouter();
 	const {
 		register,
 		handleSubmit,
@@ -62,14 +57,42 @@ const BlogEditor = ({blodId}) => {
 		},
 	});
 
-	function formatString(str) {
-		return str.toLowerCase().replace(/ /g, '_');
-	}
 
-	
 
-	// Submit Handlfer
-	const onSubmit = async (data) => {
+	const handleUpdate = async (data) => {
+			setLoading(true);
+			try {
+				if (data.file) {
+					const res = await blogService.uploadBlogFile(data.file);
+					const coverImageId = res.$id;
+					data.coverImageId = coverImageId;
+				}
+				data.authorId = user.$id;
+				data.name = getNameFromEmail(user.name);
+				if (data.coverImageId) {
+					console.log('data before update', data);
+					try {
+						await blogService.updateBlog(blogId, data);
+						notify(
+							`Blog post updated successfully`,
+							'success',
+							3000
+						);
+						reset();
+						router.push('/blog');
+					} catch (error) {
+						console.error('Error updating blog post :: ', error);
+						notify(`Error updating blog post`, 'error', 3000);
+					} finally {
+						setLoading(false);
+					}
+				}
+			} catch (error) {
+				console.error('Error uploading file :: ', error);
+			}
+	};
+
+	const handleUpload = async (data) => {
 		if (data.file) {
 			console.log(data);
 			setLoading(true);
@@ -77,7 +100,6 @@ const BlogEditor = ({blodId}) => {
 				const res = await blogService.uploadBlogFile(data.file);
 				const coverImageId = res.$id;
 				data.coverImageId = coverImageId;
-				data.slug = formatString(data.title);
 				data.authorId = user.$id;
 				data.name = getNameFromEmail(user.name);
 				if (data.coverImageId) {
@@ -102,48 +124,55 @@ const BlogEditor = ({blodId}) => {
 			}
 		} else {
 			notify(`file is required`, 'warning', 3000);
-			// ['success', 'error', 'warning', 'info']
 		}
+	}
+
+	const onSubmit = async (data) => {
+		if (!blogId) {
+			handleUpload(data);
+		}else{
+			handleUpdate(data);
+		}
+		
 	};
 
-	const getBlog = async (slug) => {
+	const getBlog = useCallback(async (slug) => {
 		setPopupLoading(true);
 		try {
-			const res = await blogService.getBlog(slug);
-			if (res) {
-				try {
-					const coverImg = await blogService.getBlogFile(
-						res.coverImageId
-					);
-					setFileImage(coverImg);
-					console.log('res', {
-						title: res.title,
-						content: res.content,
-						tags: res.tags,
-						status: res.status,
-					});
-					reset({
-						title: res.title,
-						content: res.content,
-						tags: res.tags,
-						status: res.status,
-					});
-				} catch (error) {
-					console.error('Error getting blog cover image :: ', error);
-				}
+		  const res = await blogService.getBlog(slug);
+		  if (res) {
+			try {
+			  const coverImg = await blogService.getBlogFile(res.coverImageId);
+			  setFileImage(coverImg);
+			  console.log('res:: getImagePrewiew :: ', {
+				title: res.title,
+				content: res.content,
+				tags: res.tags,
+				status: res.status,
+			  });
+			  reset({
+				title: res.title,
+				content: res.content,
+				tags: res.tags,
+				status: res.status,
+				coverImageId: res.coverImageId,
+			  });
+			} catch (error) {
+			  console.error('Error getting blog cover image :: ', error);
 			}
+		  }
 		} catch (error) {
-			console.error('Error getting blog post :: ', error);
+		  console.error('Error getting blog post :: ', error);
 		} finally {
-			setPopupLoading(false);
+		  setPopupLoading(false);
 		}
-	};
+	  }, [reset]);
 
 	useEffect(() => {
-			if (blodId) {
-				getBlog(blodId);
-			}
-	}, [])
+		if (blogId) {
+		  getBlog(blogId);
+		}
+	  }, [blogId, getBlog]);
 
 
 
@@ -157,12 +186,12 @@ const BlogEditor = ({blodId}) => {
 			mx="auto"
 			my={10}
 		>
-			{blodId && <LoadingPopup loading={popupLoading} />}
+			{blogId && <LoadingPopup loading={popupLoading} />}
 			<form onSubmit={handleSubmit(onSubmit)}>
 				{/* Editor Header */}
 				<VStack spacing={6} align="start" mb={6}>
 					<Heading size="2xl" color={accentColor}>
-						{blodId ? 'Edit Blog Post' : 'Create New Blog Post'}
+						{blogId ? 'Edit Blog Post' : 'Create New Blog Post'}
 					</Heading>
 					<Input
 						placeholder="Enter Blog Title"
@@ -419,7 +448,7 @@ const BlogEditor = ({blodId}) => {
 						colorScheme="green"
 						size="lg"
 					>
-						Publish Post
+						{blogId ? 'Update Post' : 'Publish Post'}
 					</Button>
 					<IconButton
 						icon={<DeleteIcon />}

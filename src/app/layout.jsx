@@ -19,11 +19,9 @@ export default function RootLayout({ children }) {
 			<body className={inter.className}>
 				<Providers>
 					<NotificationProvider>
-						{/* <ProtectedRoute> */}
 							<SedbarWrapper>
 							{children}
 							</SedbarWrapper>
-						{/* </ProtectedRoute> */}
 					</NotificationProvider>
 				</Providers>
 			</body>

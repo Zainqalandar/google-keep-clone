@@ -21,20 +21,22 @@ import {
 } from '@chakra-ui/react';
 import { FiMenu, FiBell, FiChevronDown } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
 
 const MobileNav = ({ onOpen, ...rest }) => {
 	const notify = useNotification();
 	const dispatch = useDispatch();
+	const router = useRouter();
 	const user = useSelector((state) => state.user.userData);
 
 	const handleLogout = async () => {
 		try {
 			const isLogout = await authService.logout();
 			nookies.destroy(null, 'userId', { path: '/' });
-			dispatch(getUserDetail({}));
 			notify('Logout successfully', 'success', 3000);
-			router.push('/sign-in');
+			await router.push('/sign-in');
 			if (isLogout) {
+				dispatch(getUserDetail({}));
 				console.log('Logout successfully');
 			}
 		} catch (error) {
@@ -42,6 +44,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
 			notify(`${error.message}`, 'error', 3000);
 		} 
 	};
+	
 
 	return (
 		<Flex

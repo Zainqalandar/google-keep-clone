@@ -1,5 +1,4 @@
 import SignInNew from '@/components/sign-up';
-import SignUp from '@/components/ui/SignUp';
 import React from 'react';
 
 export const metadata = {
@@ -10,7 +9,6 @@ export const metadata = {
 const SignUpPage = () => {
 	return (
 		<>
-			{/* <SignUp /> */}
 			<SignInNew />
 		</>
 	);

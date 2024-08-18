@@ -6,7 +6,7 @@ const Edit = ({params}) => {
     console.log('params', params)
   return (
     <>
-        <BlogEditor blodId={params.id} />
+        <BlogEditor blogId={params.id} />
     </>
   )
 }

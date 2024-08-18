@@ -19,6 +19,7 @@ export const fetchUserDetail = createAsyncThunk(
             return response
         } catch (error) {
             console.log("Error fetching UserDetails", error);
+            nookies.destroy(null, 'userId', { path: '/' });
             return rejectWithValue(error);
         }
     }

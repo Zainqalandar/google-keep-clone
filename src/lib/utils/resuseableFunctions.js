@@ -1,3 +1,6 @@
+// ['success', 'error', 'warning', 'info']
+
+
 function formatDate(dateString) {
 	const date = new Date(dateString);
 	const day = date.getDate();

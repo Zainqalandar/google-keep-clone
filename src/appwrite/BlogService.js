@@ -66,12 +66,52 @@ class BlogService {
 		}
 	}
 
-	async deleteBlog(collectionId) {
+	async updateBlog(blogId, {
+		title,
+		content,
+		authorId,
+		tags,
+		status,
+		coverImageId,
+		name,
+	}) {
+		console.log('UpdateBlog ::', {
+			title,
+			content,
+			authorId,
+			tags,
+			status,
+			coverImageId,
+			name,
+		});
+		try {
+			return await this.databases.updateDocument(
+				config.databaseId,
+				config.collectionBlogId,
+				blogId,
+				{
+					title,
+					content,
+					authorId,
+					tags,
+					status,
+					coverImageId,
+					name,
+				}
+			);
+		} catch (error) {
+			console.log('Appwrite serive :: updatePost :: error', error);
+			return false;
+		}
+	}
+
+
+	async deleteBlog(blogId) {
 		try {
 			return await this.databases.deleteDocument(
 				config.databaseId,
 				config.collectionBlogId,
-				collectionId
+				blogId
 			);
 		} catch (error) {
 			console.log('Appwrite serive :: deletePost :: error', error);
