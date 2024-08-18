@@ -1,6 +1,4 @@
 'use client';
-import Sidebar from '@/components/sidebar';
-import Navbar from '@/components/ui/Navbar';
 import { Box, Flex, Image, Text, chakra } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { usePathname } from 'next/navigation';

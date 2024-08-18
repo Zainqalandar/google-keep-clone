@@ -1,7 +1,6 @@
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
-import ProtectedRoute from '@/components/ui/ProtectedRoute';
 import { NotificationProvider } from '@/lib/provider/context/NotificationProvider';
 import SedbarWrapper from '@/lib/wrappers/SedbarWrapper';
 const inter = Inter({ subsets: ['latin'] });

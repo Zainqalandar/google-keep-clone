@@ -32,11 +32,13 @@ import { FiEdit, FiCopy, FiTrash } from 'react-icons/fi';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import ConfirmationDeletePopup from './ConfirmationDeletePopup';
 import { useNotification } from '@/lib/provider/context/NotificationProvider';
+import { useRouter } from 'next/navigation';
 
 const MegaBlog = () => {
 	const bgColor = useColorModeValue('white', 'gray.800');
 	const textColor = useColorModeValue('gray.700', 'gray.200');
 	const accentColor = useColorModeValue('purple.600', 'purple.400');
+	const router = useRouter();
 
 	const { blogs, loading } = useSelector((state) => state.blog);
 
@@ -59,7 +61,7 @@ const MegaBlog = () => {
 		}
 	};
 
-	console.log('MegaBlog :: blogs ', blogs);
+	console.log('MegaBlog :: blogs', blogs);
 
 	return (
 		<>
@@ -167,7 +169,12 @@ const MegaBlog = () => {
 													aria-label="Options"
 												/>
 												<MenuList>
-													<MenuItem icon={<FiEdit />}>
+													{/* <MenuItem icon={<FiEdit />}>
+														<Link w='100%' h='100%' href={`/edit/${blog?.$collectionId}`}>
+															Edit
+														</Link>
+													</MenuItem> */}
+													<MenuItem onClick={() => router.push(`/edit/${blog?.$id}`)} icon={<FiEdit />}>
 														Edit
 													</MenuItem>
 													<MenuItem icon={<FiCopy />}>

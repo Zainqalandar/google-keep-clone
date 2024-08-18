@@ -1,4 +1,4 @@
-import SignIn from '@/components/ui/SignIn'
+import SignIn from '@/components/sigin-in';
 import React from 'react'
 
 export const metadata = {

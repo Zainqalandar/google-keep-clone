@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
 	Box,
 	Heading,
@@ -28,10 +28,12 @@ import Image from 'next/image';
 import { useNotification } from '@/lib/provider/context/NotificationProvider';
 import { useSelector } from 'react-redux';
 import { getNameFromEmail } from '@/lib/utils/resuseableFunctions';
+import LoadingPopup from './LoadingPopup';
 
-const BlogEditor = () => {
+const BlogEditor = ({blodId}) => {
 	const [fileImage, setFileImage] = React.useState(null);
 	const [loading, setLoading] = React.useState(false);
+	const [popupLoading, setPopupLoading] = React.useState(true);
 	const notify = useNotification();
 	const toast = useToast();
 	// Color Mode Values
@@ -64,10 +66,9 @@ const BlogEditor = () => {
 		return str.toLowerCase().replace(/ /g, '_');
 	}
 
-	console.log('user.$id', user.$id);
-	console.log('user.name', getNameFromEmail(user.name));
+	
 
-	// Submit Handler
+	// Submit Handlfer
 	const onSubmit = async (data) => {
 		if (data.file) {
 			console.log(data);
@@ -106,6 +107,7 @@ const BlogEditor = () => {
 	};
 
 	const getBlog = async (slug) => {
+		setPopupLoading(true);
 		try {
 			const res = await blogService.getBlog(slug);
 			if (res) {
@@ -132,8 +134,18 @@ const BlogEditor = () => {
 			}
 		} catch (error) {
 			console.error('Error getting blog post :: ', error);
+		} finally {
+			setPopupLoading(false);
 		}
 	};
+
+	useEffect(() => {
+			if (blodId) {
+				getBlog(blodId);
+			}
+	}, [])
+
+
 
 	return (
 		<Box
@@ -145,11 +157,12 @@ const BlogEditor = () => {
 			mx="auto"
 			my={10}
 		>
+			{blodId && <LoadingPopup loading={popupLoading} />}
 			<form onSubmit={handleSubmit(onSubmit)}>
 				{/* Editor Header */}
 				<VStack spacing={6} align="start" mb={6}>
 					<Heading size="2xl" color={accentColor}>
-						Create a New Blog Post
+						{blodId ? 'Edit Blog Post' : 'Create New Blog Post'}
 					</Heading>
 					<Input
 						placeholder="Enter Blog Title"
