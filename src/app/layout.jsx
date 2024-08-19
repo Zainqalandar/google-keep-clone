@@ -6,7 +6,7 @@ import SedbarWrapper from '@/lib/wrappers/SedbarWrapper';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-	title: 'Todo Notes',
+	title: 'Google Keep Clone',
 	description: 'Todo notes app',
 };
 

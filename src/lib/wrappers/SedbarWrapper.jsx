@@ -2,10 +2,11 @@
 import { Box, Flex, Image, Text, chakra } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import DashbordNav from '@/components/ui/DashbordNav';
+// import DashbordNav from '@/components/ui/DashbordNav';
 import SidebarWithHeader from '@/components/sidebar-new';
 import { fetchUserDetail } from '@/store/feature-user';
 import { useDispatch, useSelector } from 'react-redux';
+import Navbar from '@/components/navbar';
 
 const SedbarWrapper = ({ children }) => {
 	const dispatch = useDispatch();
@@ -55,7 +56,7 @@ const SedbarWrapper = ({ children }) => {
 	if (pathname === '/' || pathname === '/my-blogs') {
 		return (
 			<>
-				<DashbordNav />
+				<Navbar />
 				<chakra.main p={6}>{children}</chakra.main>
 			</>
 		);
@@ -65,12 +66,7 @@ const SedbarWrapper = ({ children }) => {
 
 	return (
 		<>
-			{/* <Sidebar /> */}
 			<SidebarWithHeader>{children}</SidebarWithHeader>
-			{/* <Box flexGrow={1} p={2} minH="100vh" overflow="auto">
-				<Navbar />
-				<chakra.main p={6}>{children}</chakra.main>
-			</Box> */}
 		</>
 	);
 };
