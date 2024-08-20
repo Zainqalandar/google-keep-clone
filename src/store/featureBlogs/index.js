@@ -10,9 +10,9 @@ const initialState = {
 // Create an async thunk for fetching blogs
 export const fetchBlogs = createAsyncThunk(
     "featureBlogs/fetchBlogs",
-    async (_, { rejectWithValue }) => {
+    async (authId, { rejectWithValue }) => {
         try {
-            const response = await blogService.getBlogs();
+            const response = await blogService.getBlogs(authId);
             return response.documents;
         } catch (error) {
             console.log("Error fetching blogs", error);

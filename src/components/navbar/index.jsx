@@ -93,13 +93,13 @@ const Navbar = () => {
 							<Box onClick={() => router.push('/')}>
 								<HStack>
 									{/* <Logo /> */}
-									<Link href="/">
+									{/*<Link href="/">*/}
 										<Image
 											src="/google-keep.png"
 											alt="Logo"
 											boxSize="40px"
 										/>
-									</Link>
+									{/*</Link>*/}
 								</HStack>
 							</Box>
 						</Flex>

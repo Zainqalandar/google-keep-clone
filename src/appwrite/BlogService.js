@@ -119,11 +119,16 @@ class BlogService {
 		}
 	}
 
-	async getBlogs(queries = [Query.equal('title', 'content')]) {
+	async getBlogs(authId = null) {
 		try {
+			let queries = []
+			if(authId){
+				queries.push(Query.equal('authorId', authId));
+			}
 			return await this.databases.listDocuments(
 				config.databaseId,
-				config.collectionBlogId // collection id
+				config.collectionBlogId, // collection id
+				queries
 			);
 		} catch (error) {
 			console.log('Appwrite serive :: getPosts :: error', error);

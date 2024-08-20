@@ -2,6 +2,8 @@
 import React, { useEffect } from 'react';
 import { fetchBlogs } from '@/store/featureBlogs';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { usePathname } from 'next/navigation';
 import {
 	Box,
 	Heading,
@@ -25,22 +27,30 @@ import {
 import MenuButtons from './menu-btns';
 import BlogSkeleton from './blog-skeleton';
 import RelatedPosts from './related-posts';
+import EmptyBlog from "@/components/blogs/empty-blog";
 
 const Blogs = () => {
 	const bgColor = useColorModeValue('white', 'gray.800');
 	const textColor = useColorModeValue('gray.700', 'gray.200');
 	const accentColor = useColorModeValue('purple.600', 'purple.400');
+	const personalPath = usePathname()
 
-	const { blogs, loading } = useSelector((state) => state.blog);
-	
+	// const { blogs, loading } = useSelector((state) => state.blog);
+	const { blog, user } = useSelector((state) => state);
+
 	const dispatch = useDispatch();
 
+	let isPersonal = personalPath === '/blog'
+
+	let userId = isPersonal ? user.userData?.$id : null
 	useEffect(() => {
-		dispatch(fetchBlogs());
+
+		console.log('personalPath', personalPath)
+		dispatch(fetchBlogs(userId));
 	}, [dispatch]);
 
 
-	console.log('MegaBlog :: blogs', blogs);
+	console.log('MegaBlog :: blogs', blog.blogs);
 
 	return (
 		<Box
@@ -52,11 +62,11 @@ const Blogs = () => {
 			mx="auto"
 			my={10}
 		>
-			{loading ? (
+			{blog.loading ? (
 				<BlogSkeleton />
 			) : (
 				<>
-					{blogs
+					{blog.blogs
 						?.map((blog, index) => (
 							<div key={index}>
 								<VStack spacing={6} align="start">
@@ -129,10 +139,12 @@ const Blogs = () => {
 												</Text>
 											</VStack>
 										</HStack>
-										<MenuButtons
+										{blog?.authorId ===user.userData?.$id && <MenuButtons
 											blogId={blog?.$id}
 											blogFileId={blog?.coverImageId}
-										/>
+											fetchBlogs={fetchBlogs}
+											userId={userId}
+										/>}
 									</HStack>
 								</VStack>
 
@@ -161,10 +173,13 @@ const Blogs = () => {
 							</div>
 						))
 						.reverse()}
+					{
+						!blog.blogs.length && <EmptyBlog type='blog' text='No Blogs Available' />
+					}
 				</>
 			)}
 
-			<RelatedPosts />
+			{!isPersonal && <RelatedPosts/>}
 		</Box>
 	);
 };

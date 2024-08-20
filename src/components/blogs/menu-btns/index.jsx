@@ -9,13 +9,15 @@ import {
 } from '@chakra-ui/react';
 import blogService from '@/appwrite/BlogService';
 import { FiEdit, FiCopy } from 'react-icons/fi';
+import { HiArchiveBoxXMark } from 'react-icons/hi2';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import { useNotification } from '@/lib/provider/context/NotificationProvider';
 import { useRouter } from 'next/navigation';
 import ConfirmationDeletePopup from '@/components/ui/ConfirmationDeletePopup';
+import {fetchBlogs} from "@/store/featureBlogs";
 
 
-const MenuButtons = ({blogId, blogFileId}) => {
+const MenuButtons = ({blogId, blogFileId, fetchBlogs, userId}) => {
 	const router = useRouter();
 
 	const notify = useNotification();
@@ -27,7 +29,7 @@ const MenuButtons = ({blogId, blogFileId}) => {
 			await blogService.deleteBlog(blogId);
 			await blogService.deleteBlogFile(blogFileId);
 			notify('Blog deleted successfully', 'success');
-			dispatch(fetchBlogs());
+			dispatch(fetchBlogs(userId));
 		} catch (error) {
 			console.log('MegaBlog :: handleDelete :: error', error);
 			notify('Error deleting blog', 'error');
@@ -43,12 +45,18 @@ const MenuButtons = ({blogId, blogFileId}) => {
 			/>
 			<MenuList>
 				<MenuItem
-					onClick={() => router.push(`/edit/${blog?.$id}`)}
+					onClick={() => router.push(`/edit/${blogId}`)}
 					icon={<FiEdit />}
 				>
 					Edit
 				</MenuItem>
 				<MenuItem icon={<FiCopy />}>Duplicate</MenuItem>
+				<MenuItem
+					onClick={() => router.push(`/edit/${blogId}`)}
+					icon={<HiArchiveBoxXMark />}
+				>
+					Archive
+				</MenuItem>
 				<ConfirmationDeletePopup
 					blogId={blogId}
 					blogFileId={blogFileId}
