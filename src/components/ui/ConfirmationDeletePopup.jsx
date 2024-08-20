@@ -17,10 +17,9 @@ import {
 } from '@chakra-ui/react';
 import { FiTrash } from 'react-icons/fi';
 
-const ConfirmationDeletePopup = ({blogId, blogFileId, onHandleDelete}) => {
+const ConfirmationDeletePopup = ({ blogId, blogFileId, onHandleDelete }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
-	// Color Mode Values
 	const textColor = useColorModeValue('gray.700', 'gray.200');
 	const accentColor = useColorModeValue('purple.600', 'purple.400');
 	const deleteButtonColor = useColorModeValue('red.500', 'red.600');
@@ -28,10 +27,7 @@ const ConfirmationDeletePopup = ({blogId, blogFileId, onHandleDelete}) => {
 
 	return (
 		<>
-			<MenuItem
-				onClick={onOpen}
-				icon={<FiTrash />}
-			>
+			<MenuItem onClick={onOpen} icon={<FiTrash />}>
 				Move to Bin
 			</MenuItem>
 
@@ -64,8 +60,7 @@ const ConfirmationDeletePopup = ({blogId, blogFileId, onHandleDelete}) => {
 								color="white"
 								_hover={{ bg: 'red.600' }}
 								onClick={() => {
-									// Add your delete functionality here
-                                    onHandleDelete(blogId, blogFileId);
+									onHandleDelete(blogId, blogFileId);
 									onClose();
 								}}
 							>

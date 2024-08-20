@@ -35,7 +35,7 @@ const Blogs = () => {
 	const accentColor = useColorModeValue('purple.600', 'purple.400');
 	const personalPath = usePathname()
 
-	// const { blogs, loading } = useSelector((state) => state.blog);
+
 	const { blog, user } = useSelector((state) => state);
 
 	const dispatch = useDispatch();

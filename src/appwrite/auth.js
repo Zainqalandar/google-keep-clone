@@ -19,9 +19,6 @@ class AuthService {
 				password,
 				name
 			);
-			//    if (userAccount) {
-
-			//    }
 			return userAccount;
 		} catch (error) {
 			throw error;

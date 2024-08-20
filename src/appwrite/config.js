@@ -12,37 +12,37 @@ class Service {
 		this.databases = new Databases(this.client);
 		this.bucket = new Storage(this.client);
 	}
-    async createTodo(title, description, status, tags) {
-        console.log(title, description, status, tags);
-        try {
-            const response = await this.databases.createDocument(
-                config.databaseId,
-                config.collectionTaskId,
-                ID.unique(),
-                {
-                    title,
-                    description,
-                    status,
-                    tags,
-                }
-            );
-            return response;
-        } catch (error) {
-            throw error;
-        }
-    }
+	async createTodo(title, description, status, tags) {
+		console.log(title, description, status, tags);
+		try {
+			const response = await this.databases.createDocument(
+				config.databaseId,
+				config.collectionTaskId,
+				ID.unique(),
+				{
+					title,
+					description,
+					status,
+					tags,
+				}
+			);
+			return response;
+		} catch (error) {
+			throw error;
+		}
+	}
 
-    async getTodos(queries = [Query.equal("title", "description")]) {
-        try {
-            return await this.databases.listDocuments(
-                config.databaseId,
-                config.collectionTaskId,  // collection id
-            )
-        } catch (error) {
-            console.log("Appwrite serive :: getPosts :: error", error);
-            return false
-        }
-    }
+	async getTodos(queries = [Query.equal('title', 'description')]) {
+		try {
+			return await this.databases.listDocuments(
+				config.databaseId,
+				config.collectionTaskId
+			);
+		} catch (error) {
+			console.log('Appwrite serive :: getPosts :: error', error);
+			return false;
+		}
+	}
 }
 
 const service = new Service();

@@ -1,14 +1,12 @@
-import Blogs from '@/components/blogs'
-// import MegaBlog from '@/components/ui/MegaBlog'
-import React from 'react'
+import Blogs from '@/components/blogs';
+import React from 'react';
 
 const Blog = () => {
-  return (
-    <div>
-        {/* <MegaBlog /> */}
-        <Blogs />
-    </div>
-  )
-}
+	return (
+		<div>
+			<Blogs />
+		</div>
+	);
+};
 
-export default Blog
+export default Blog;

@@ -1,4 +1,3 @@
-// 'use client';
 import { useDispatch } from 'react-redux';
 import {
 	MenuButton,
@@ -14,15 +13,12 @@ import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import { useNotification } from '@/lib/provider/context/NotificationProvider';
 import { useRouter } from 'next/navigation';
 import ConfirmationDeletePopup from '@/components/ui/ConfirmationDeletePopup';
-import {fetchBlogs} from "@/store/featureBlogs";
 
-
-const MenuButtons = ({blogId, blogFileId, fetchBlogs, userId}) => {
+const MenuButtons = ({ blogId, blogFileId, fetchBlogs, userId }) => {
 	const router = useRouter();
 
 	const notify = useNotification();
 	const dispatch = useDispatch();
-
 
 	const handleDelete = async (blogId, blogFileId) => {
 		try {

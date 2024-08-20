@@ -1,6 +1,5 @@
 // ['success', 'error', 'warning', 'info']
 
-
 function formatDate(dateString) {
 	const date = new Date(dateString);
 	const day = date.getDate();
@@ -26,12 +25,12 @@ function formatDate(dateString) {
 }
 
 function getNameFromEmail(email) {
-    if(email){
-        const username = email.split('@')[0];
-        const capitalizedUsername =
-            username.charAt(0).toUpperCase() + username.slice(1);
-        return capitalizedUsername;
-    }
+	if (email) {
+		const username = email.split('@')[0];
+		const capitalizedUsername =
+			username.charAt(0).toUpperCase() + username.slice(1);
+		return capitalizedUsername;
+	}
 }
 
 function getColorFromId(id) {
@@ -73,7 +72,6 @@ function getTimeSinceCreation(blogDate) {
 			(timeDifference % (1000 * 60 * 60)) / (1000 * 60)
 		);
 
-		// Return a special case for "a few minutes ago" if minutes are 0
 		return {
 			isNew: true,
 			timeString:

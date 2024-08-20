@@ -7,18 +7,14 @@ import {
 	Button,
 	FormErrorMessage,
 	FormControl,
-	FormLabel,
-    Text,
+	Text,
 } from '@chakra-ui/react';
-// import FormFieldsContent from './form-fields-content';
 import authService from '@/appwrite/auth';
 import { Link } from '@chakra-ui/next-js';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useNotification } from '@/lib/provider/context/NotificationProvider';
-import { getUserDetail } from '@/store/feature-user';
 import { useDispatch } from 'react-redux';
-import nookies from 'nookies';
 import FormFieldsContent from '@/components/sigin-in/form-fields/form-fields-content';
 
 const FormFieldSignUp = () => {
@@ -32,21 +28,24 @@ const FormFieldSignUp = () => {
 	const router = useRouter();
 	const notify = useNotification();
 
-	const onSubmit =async (data) => {
-        try {
-         const isCreatedSuccess =  authService.createAccount(data.email, data.password, data.username);
-          if (isCreatedSuccess) {
-            console.log('Account created successfully');
-            router.push('/sign-in');
-            notify('Account created successfully', 'success', 3000);
-          }
-        } catch (error) {
-          console.error(error);
-          notify(`${error.message}`, 'error', 3000);
-        }
-      }
+	const onSubmit = async (data) => {
+		try {
+			const isCreatedSuccess = authService.createAccount(
+				data.email,
+				data.password,
+				data.username
+			);
+			if (isCreatedSuccess) {
+				console.log('Account created successfully');
+				router.push('/sign-in');
+				notify('Account created successfully', 'success', 3000);
+			}
+		} catch (error) {
+			console.error(error);
+			notify(`${error.message}`, 'error', 3000);
+		}
+	};
 
-	console.log('error', errors);
 	return (
 		<Stack
 			bg={'gray.50'}
@@ -58,26 +57,26 @@ const FormFieldSignUp = () => {
 			<FormFieldsContent />
 			<Box as={'form'} mt={10}>
 				<Stack spacing={4}>
-                    <FormControl id="username" isInvalid={errors.username}>
-                        <Input
-                            type="text"
-                            {...register('username', {
-                                required: 'Username is required',
-                            })}
-                            placeholder="Username"
-                            bg={'gray.100'}
-                            border={0}
-                            color={'gray.500'}
-                            _placeholder={{
-                                color: 'gray.500',
-                            }}
-                        />
-                        {errors.username && (
-                            <FormErrorMessage>
-                                {errors.username.message}
-                            </FormErrorMessage>
-                        )}
-                    </FormControl>
+					<FormControl id="username" isInvalid={errors.username}>
+						<Input
+							type="text"
+							{...register('username', {
+								required: 'Username is required',
+							})}
+							placeholder="Username"
+							bg={'gray.100'}
+							border={0}
+							color={'gray.500'}
+							_placeholder={{
+								color: 'gray.500',
+							}}
+						/>
+						{errors.username && (
+							<FormErrorMessage>
+								{errors.username.message}
+							</FormErrorMessage>
+						)}
+					</FormControl>
 					<FormControl id="email" isInvalid={errors.email}>
 						<Input
 							type="email"
@@ -137,7 +136,9 @@ const FormFieldSignUp = () => {
 					</Button>
 				</Stack>
 				<Button
-					isDisabled={errors.email || errors.password || errors.username}
+					isDisabled={
+						errors.email || errors.password || errors.username
+					}
 					type="submit"
 					isLoading={loading}
 					loadingText="Submitting..."

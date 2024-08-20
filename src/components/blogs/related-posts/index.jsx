@@ -1,12 +1,18 @@
-import { Box, Heading, HStack, Image, Text, useColorModeValue } from '@chakra-ui/react';
+import {
+	Box,
+	Heading,
+	HStack,
+	Image,
+	Text,
+	useColorModeValue,
+} from '@chakra-ui/react';
 import React from 'react';
 
 const RelatedPosts = () => {
-    const accentColor = useColorModeValue('purple.600', 'purple.400');
+	const accentColor = useColorModeValue('purple.600', 'purple.400');
 	const textColor = useColorModeValue('gray.700', 'gray.200');
 	return (
 		<>
-			{/* Related Posts */}
 			<Heading size="lg" mb={4} color={accentColor}>
 				Related Posts
 			</Heading>

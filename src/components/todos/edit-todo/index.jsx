@@ -15,13 +15,7 @@ import {
 } from '@chakra-ui/react';
 import service from '@/appwrite/config';
 
-const EditTodo = ({handleRefresh}) => {
-	// {
-	//   title: "Buy groceries",
-	//   description: "Buy milk, bread, and eggs",
-	//   status: false,
-	//   tags: ["shopping", "errands"]
-	// }
+const EditTodo = ({ handleRefresh }) => {
 	const initTodo = {
 		title: '',
 		description: '',
@@ -59,17 +53,20 @@ const EditTodo = ({handleRefresh}) => {
 			tags: prevState.tags.filter((tag) => tag !== tagToRemove),
 		}));
 	};
-  const handleSubmit = () => {
-    try {
-      service.createTodo(todo.title, todo.description, todo.status, todo.tags);
-      setTodo(initTodo);
-	  handleRefresh();
-      
-    } catch (error) {
-      console.error(error);
-      
-    }
-  };
+	const handleSubmit = () => {
+		try {
+			service.createTodo(
+				todo.title,
+				todo.description,
+				todo.status,
+				todo.tags
+			);
+			setTodo(initTodo);
+			handleRefresh();
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
 	return (
 		<ChakraProvider>
@@ -140,14 +137,13 @@ const EditTodo = ({handleRefresh}) => {
 							>
 								Add Tag
 							</Button>
-              {/* Submite Button */}
-              <Button
-                onClick={() => handleSubmit()}
-                size="sm"
-                colorScheme="teal"
-              >
-                Submit
-              </Button>
+							<Button
+								onClick={() => handleSubmit()}
+								size="sm"
+								colorScheme="teal"
+							>
+								Submit
+							</Button>
 						</VStack>
 					</FormControl>
 				</VStack>

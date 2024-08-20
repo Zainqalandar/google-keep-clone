@@ -69,7 +69,6 @@ const Navbar = () => {
 		}
 	};
 
-	
 	return (
 		<React.Fragment>
 			<chakra.header
@@ -92,14 +91,11 @@ const Navbar = () => {
 						<Flex align="flex-start">
 							<Box onClick={() => router.push('/')}>
 								<HStack>
-									{/* <Logo /> */}
-									{/*<Link href="/">*/}
-										<Image
-											src="/google-keep.png"
-											alt="Logo"
-											boxSize="40px"
-										/>
-									{/*</Link>*/}
+									<Image
+										src="/google-keep.png"
+										alt="Logo"
+										boxSize="40px"
+									/>
 								</HStack>
 							</Box>
 						</Flex>

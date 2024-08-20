@@ -66,15 +66,10 @@ class BlogService {
 		}
 	}
 
-	async updateBlog(blogId, {
-		title,
-		content,
-		authorId,
-		tags,
-		status,
-		coverImageId,
-		name,
-	}) {
+	async updateBlog(
+		blogId,
+		{ title, content, authorId, tags, status, coverImageId, name }
+	) {
 		console.log('UpdateBlog ::', {
 			title,
 			content,
@@ -105,7 +100,6 @@ class BlogService {
 		}
 	}
 
-
 	async deleteBlog(blogId) {
 		try {
 			return await this.databases.deleteDocument(
@@ -121,13 +115,13 @@ class BlogService {
 
 	async getBlogs(authId = null) {
 		try {
-			let queries = []
-			if(authId){
+			let queries = [];
+			if (authId) {
 				queries.push(Query.equal('authorId', authId));
 			}
 			return await this.databases.listDocuments(
 				config.databaseId,
-				config.collectionBlogId, // collection id
+				config.collectionBlogId,
 				queries
 			);
 		} catch (error) {

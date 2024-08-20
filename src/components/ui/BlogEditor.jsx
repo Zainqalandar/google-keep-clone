@@ -29,7 +29,7 @@ import { getNameFromEmail } from '@/lib/utils/resuseableFunctions';
 import LoadingPopup from './LoadingPopup';
 import { useRouter } from 'next/navigation';
 
-const BlogEditor = ({blogId}) => {
+const BlogEditor = ({ blogId }) => {
 	const [fileImage, setFileImage] = React.useState(null);
 	const [loading, setLoading] = React.useState(false);
 	const [popupLoading, setPopupLoading] = React.useState(true);
@@ -57,39 +57,33 @@ const BlogEditor = ({blogId}) => {
 		},
 	});
 
-
-
 	const handleUpdate = async (data) => {
-			setLoading(true);
-			try {
-				if (data.file) {
-					const res = await blogService.uploadBlogFile(data.file);
-					const coverImageId = res.$id;
-					data.coverImageId = coverImageId;
-				}
-				data.authorId = user.$id;
-				data.name = getNameFromEmail(user.name);
-				if (data.coverImageId) {
-					console.log('data before update', data);
-					try {
-						await blogService.updateBlog(blogId, data);
-						notify(
-							`Blog post updated successfully`,
-							'success',
-							3000
-						);
-						reset();
-						router.push('/blog');
-					} catch (error) {
-						console.error('Error updating blog post :: ', error);
-						notify(`Error updating blog post`, 'error', 3000);
-					} finally {
-						setLoading(false);
-					}
-				}
-			} catch (error) {
-				console.error('Error uploading file :: ', error);
+		setLoading(true);
+		try {
+			if (data.file) {
+				const res = await blogService.uploadBlogFile(data.file);
+				const coverImageId = res.$id;
+				data.coverImageId = coverImageId;
 			}
+			data.authorId = user.$id;
+			data.name = getNameFromEmail(user.name);
+			if (data.coverImageId) {
+				console.log('data before update', data);
+				try {
+					await blogService.updateBlog(blogId, data);
+					notify(`Blog post updated successfully`, 'success', 3000);
+					reset();
+					router.push('/blog');
+				} catch (error) {
+					console.error('Error updating blog post :: ', error);
+					notify(`Error updating blog post`, 'error', 3000);
+				} finally {
+					setLoading(false);
+				}
+			}
+		} catch (error) {
+			console.error('Error uploading file :: ', error);
+		}
 	};
 
 	const handleUpload = async (data) => {
@@ -125,56 +119,61 @@ const BlogEditor = ({blogId}) => {
 		} else {
 			notify(`file is required`, 'warning', 3000);
 		}
-	}
+	};
 
 	const onSubmit = async (data) => {
 		if (!blogId) {
 			handleUpload(data);
-		}else{
+		} else {
 			handleUpdate(data);
 		}
-		
 	};
 
-	const getBlog = useCallback(async (slug) => {
-		setPopupLoading(true);
-		try {
-		  const res = await blogService.getBlog(slug);
-		  if (res) {
+	const getBlog = useCallback(
+		async (slug) => {
+			setPopupLoading(true);
 			try {
-			  const coverImg = await blogService.getBlogFile(res.coverImageId);
-			  setFileImage(coverImg);
-			  console.log('res:: getImagePrewiew :: ', {
-				title: res.title,
-				content: res.content,
-				tags: res.tags,
-				status: res.status,
-			  });
-			  reset({
-				title: res.title,
-				content: res.content,
-				tags: res.tags,
-				status: res.status,
-				coverImageId: res.coverImageId,
-			  });
+				const res = await blogService.getBlog(slug);
+				if (res) {
+					try {
+						const coverImg = await blogService.getBlogFile(
+							res.coverImageId
+						);
+						setFileImage(coverImg);
+						console.log('res:: getImagePrewiew :: ', {
+							title: res.title,
+							content: res.content,
+							tags: res.tags,
+							status: res.status,
+						});
+						reset({
+							title: res.title,
+							content: res.content,
+							tags: res.tags,
+							status: res.status,
+							coverImageId: res.coverImageId,
+						});
+					} catch (error) {
+						console.error(
+							'Error getting blog cover image :: ',
+							error
+						);
+					}
+				}
 			} catch (error) {
-			  console.error('Error getting blog cover image :: ', error);
+				console.error('Error getting blog post :: ', error);
+			} finally {
+				setPopupLoading(false);
 			}
-		  }
-		} catch (error) {
-		  console.error('Error getting blog post :: ', error);
-		} finally {
-		  setPopupLoading(false);
-		}
-	  }, [reset]);
+		},
+		[reset]
+	);
 
 	useEffect(() => {
 		if (blogId) {
-		  getBlog(blogId);
+			getBlog(blogId);
 		}
-	  }, [blogId, getBlog]);
-
-
+	}, [blogId, getBlog]);
 
 	return (
 		<Box
@@ -188,7 +187,6 @@ const BlogEditor = ({blogId}) => {
 		>
 			{blogId && <LoadingPopup loading={popupLoading} />}
 			<form onSubmit={handleSubmit(onSubmit)}>
-				{/* Editor Header */}
 				<VStack spacing={6} align="start" mb={6}>
 					<Heading size="2xl" color={accentColor}>
 						{blogId ? 'Edit Blog Post' : 'Create New Blog Post'}
@@ -222,7 +220,6 @@ const BlogEditor = ({blogId}) => {
 
 				<Divider my={6} />
 
-				{/* Formatting Toolbar */}
 				<HStack spacing={4} mb={6}>
 					<IconButton
 						icon={<FaBold />}
@@ -265,7 +262,6 @@ const BlogEditor = ({blogId}) => {
 					</Select>
 				</HStack>
 
-				{/* Content Area */}
 				<Textarea
 					hidden={true}
 					placeholder="Start writing your blog post here..."
@@ -311,7 +307,6 @@ const BlogEditor = ({blogId}) => {
 
 				<Divider my={6} />
 
-				{/* Tags and Status Fields */}
 				<HStack spacing={6} mb={6}>
 					<Box flex={1}>
 						<FormLabel>Tags</FormLabel>
@@ -398,12 +393,11 @@ const BlogEditor = ({blogId}) => {
 							boxShadow="md"
 							width={500}
 							height={300}
-							unoptimized // Disable the default Next.js image optimization
+							unoptimized
 						/>
 					</Box>
 				)}
 
-				{/* Preview Section */}
 				<VStack align="start" spacing={4} mb={6}>
 					<Heading size="lg" color={accentColor}>
 						Preview
@@ -430,8 +424,6 @@ const BlogEditor = ({blogId}) => {
 				</VStack>
 
 				<Divider my={6} />
-
-				{/* Action Buttons */}
 				<HStack justify="space-between">
 					<Button
 						onClick={() => getBlog('66ba5dec00350b232bdc')}
