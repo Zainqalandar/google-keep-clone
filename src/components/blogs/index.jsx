@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { fetchBlogs } from '@/store/featureBlogs';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -13,27 +13,34 @@ import {
 	Divider,
 	Link,
 	useColorModeValue,
-	useStatStyles,
+	Badge,
 } from '@chakra-ui/react';
 import blogService from '@/appwrite/BlogService';
-import { formatDate, getColorFromId, getNameFromEmail } from '@/lib/utils/resuseableFunctions';
-import BlogSkeleton from '../ui/BlogSkeleton';
+import {
+	formatDate,
+	getColorFromId,
+	getNameFromEmail,
+	getTimeSinceCreation,
+} from '@/lib/utils/resuseableFunctions';
+import MenuButtons from './menu-btns';
+import BlogSkeleton from './blog-skeleton';
+import RelatedPosts from './related-posts';
 
 const Blogs = () => {
 	const bgColor = useColorModeValue('white', 'gray.800');
 	const textColor = useColorModeValue('gray.700', 'gray.200');
 	const accentColor = useColorModeValue('purple.600', 'purple.400');
 
+	const { blogs, loading } = useSelector((state) => state.blog);
+	
 	const dispatch = useDispatch();
-	const { blogs, error, loading } = useSelector((state) => state.blog);
-
 
 	useEffect(() => {
 		dispatch(fetchBlogs());
 	}, [dispatch]);
 
 
-
+	console.log('MegaBlog :: blogs', blogs);
 
 	return (
 		<Box
@@ -67,27 +74,65 @@ const Blogs = () => {
 									<Heading size="2xl" color={accentColor}>
 										{blog?.title}
 									</Heading>
-									<HStack spacing={4}>
-										<Avatar
-											src="/zain.qalandar.jpg"
-											name={getNameFromEmail(blog?.name)}
-											size="md"
-											bg={getColorFromId(blog?.authorId)}
+									<HStack
+										spacing={4}
+										w="full"
+										justify="space-between"
+									>
+										<HStack spacing={4}>
+											<Avatar
+												src="/zain.qalandar.jpg"
+												name={getNameFromEmail(
+													blog?.name
+												)}
+												size="md"
+												bg={getColorFromId(
+													blog?.authorId
+												)}
+											/>
+
+											<VStack align="start" spacing={0}>
+												<Text
+													fontWeight="bold"
+													color={textColor}
+												>
+													{blog?.name}
+													{getTimeSinceCreation(
+														blog?.$createdAt
+													).isNew && (
+														<Badge
+															ml="3"
+															colorScheme="green"
+														>
+															New
+														</Badge>
+													)}
+												</Text>
+												<Text
+													fontSize="sm"
+													color={textColor}
+												>
+													{formatDate(
+														blog?.$createdAt
+													)}
+													{getTimeSinceCreation(
+														blog?.$createdAt
+													).isNew && (
+														<Text as="span" ml="2">
+															{
+																getTimeSinceCreation(
+																	blog?.$createdAt
+																).timeString
+															}
+														</Text>
+													)}
+												</Text>
+											</VStack>
+										</HStack>
+										<MenuButtons
+											blogId={blog?.$id}
+											blogFileId={blog?.coverImageId}
 										/>
-										<VStack align="start" spacing={0}>
-											<Text
-												fontWeight="bold"
-												color={textColor}
-											>
-												{blog?.name}
-											</Text>
-											<Text
-												fontSize="sm"
-												color={textColor}
-											>
-												{formatDate(blog?.$createdAt)}
-											</Text>
-										</VStack>
 									</HStack>
 								</VStack>
 
@@ -118,6 +163,8 @@ const Blogs = () => {
 						.reverse()}
 				</>
 			)}
+
+			<RelatedPosts />
 		</Box>
 	);
 };

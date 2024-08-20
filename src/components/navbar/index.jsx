@@ -47,7 +47,6 @@ const Navbar = () => {
 	const router = useRouter();
 	const [loading, setLoading] = React.useState(false);
 	const allUserData = useSelector((state) => state);
-	console.log('allUserData', allUserData);
 	const isActive = useSelector((state) => state.user.isActive);
 	const dispatch = useDispatch();
 
