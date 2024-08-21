@@ -345,7 +345,7 @@ const BlogEditor = ({ blogId }) => {
 								required: 'Status field is required',
 							})}
 						>
-							<option value="draft">Draft</option>
+							<option value="bin">Bin</option>
 							<option value="published">Published</option>
 							<option value="archived">Archived</option>
 						</Select>

@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect } from 'react';
-import { fetchBlogs } from '@/store/featureBlogs';
+import { fetchPublishBlogs } from '@/store/featureBlogs';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { usePathname } from 'next/navigation';
@@ -36,21 +36,28 @@ const Blogs = () => {
 	const personalPath = usePathname()
 
 
-	const { blog, user } = useSelector((state) => state);
+	// const { blogs, loading, error } = useSelector((state) => state.publish);
+	const State = useSelector((state) => state);
 
 	const dispatch = useDispatch();
 
 	let isPersonal = personalPath === '/blog'
 
-	let userId = isPersonal ? user.userData?.$id : null
-	useEffect(() => {
+	// let userId = isPersonal ? user.userData?.$id : null
+	// useEffect(() => {
 
-		console.log('personalPath', personalPath)
-		dispatch(fetchBlogs(userId));
+	// 	console.log('personalPath', personalPath)
+	// 	dispatch(fetchBlogs(userId));
+	// }, [dispatch]);
+	
+	useEffect(() => {
+		dispatch(fetchPublishBlogs());
 	}, [dispatch]);
 
 
-	console.log('MegaBlog :: blogs', blog.blogs);
+	// console.log('loading :: blogs', loading);
+	// console.log('blogs :: blogs', blogs);
+	console.log('State :: blogs', State);
 
 	return (
 		<Box
@@ -62,124 +69,7 @@ const Blogs = () => {
 			mx="auto"
 			my={10}
 		>
-			{blog.loading ? (
-				<BlogSkeleton />
-			) : (
-				<>
-					{blog.blogs
-						?.map((blog, index) => (
-							<div key={index}>
-								<VStack spacing={6} align="start">
-									<Image
-										src={blogService.getBlogFile(
-											blog?.coverImageId
-										)}
-										alt="Blog image"
-										borderradius="md"
-										w="full"
-										h="400px"
-										objectFit="cover"
-										unoptimized="true"
-									/>
-									<Heading size="2xl" color={accentColor}>
-										{blog?.title}
-									</Heading>
-									<HStack
-										spacing={4}
-										w="full"
-										justify="space-between"
-									>
-										<HStack spacing={4}>
-											<Avatar
-												src="/zain.qalandar.jpg"
-												name={getNameFromEmail(
-													blog?.name
-												)}
-												size="md"
-												bg={getColorFromId(
-													blog?.authorId
-												)}
-											/>
-
-											<VStack align="start" spacing={0}>
-												<Text
-													fontWeight="bold"
-													color={textColor}
-												>
-													{blog?.name}
-													{getTimeSinceCreation(
-														blog?.$createdAt
-													).isNew && (
-														<Badge
-															ml="3"
-															colorScheme="green"
-														>
-															New
-														</Badge>
-													)}
-												</Text>
-												<Text
-													fontSize="sm"
-													color={textColor}
-												>
-													{formatDate(
-														blog?.$createdAt
-													)}
-													{getTimeSinceCreation(
-														blog?.$createdAt
-													).isNew && (
-														<Text as="span" ml="2">
-															{
-																getTimeSinceCreation(
-																	blog?.$createdAt
-																).timeString
-															}
-														</Text>
-													)}
-												</Text>
-											</VStack>
-										</HStack>
-										{blog?.authorId ===user.userData?.$id && <MenuButtons
-											blogId={blog?.$id}
-											blogFileId={blog?.coverImageId}
-											fetchBlogs={fetchBlogs}
-											userId={userId}
-										/>}
-									</HStack>
-								</VStack>
-
-								<Divider my={6} />
-
-								{/* Blog Content */}
-								<VStack spacing={4} align="start">
-									<Text
-										dangerouslySetInnerHTML={{
-											__html: blog?.content,
-										}}
-										fontSize="lg"
-										color={textColor}
-									/>
-
-									<Link
-										color={accentColor}
-										fontWeight="bold"
-										href="#"
-									>
-										Read more
-									</Link>
-								</VStack>
-
-								<Divider my={6} />
-							</div>
-						))
-						.reverse()}
-					{
-						!blog.blogs.length && <EmptyBlog type='blog' text='No Blogs Available' />
-					}
-				</>
-			)}
-
-			{!isPersonal && <RelatedPosts/>}
+			blogs
 		</Box>
 	);
 };
