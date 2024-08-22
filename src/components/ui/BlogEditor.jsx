@@ -33,13 +33,16 @@ const BlogEditor = ({ blogId }) => {
 	const [fileImage, setFileImage] = React.useState(null);
 	const [loading, setLoading] = React.useState(false);
 	const [popupLoading, setPopupLoading] = React.useState(true);
+
 	const notify = useNotification();
+	const user = useSelector((state) => state.user.userData);
+	const router = useRouter();
+
 	const bgColor = useColorModeValue('white', 'gray.800');
 	const textColor = useColorModeValue('gray.700', 'gray.200');
 	const accentColor = useColorModeValue('purple.600', 'purple.400');
 	const inputBgColor = useColorModeValue('gray.50', 'gray.700');
-	const user = useSelector((state) => state.user.userData);
-	const router = useRouter();
+
 	const {
 		register,
 		handleSubmit,
@@ -57,79 +60,13 @@ const BlogEditor = ({ blogId }) => {
 		},
 	});
 
-	const handleUpdate = async (data) => {
-		setLoading(true);
-		try {
-			if (data.file) {
-				const res = await blogService.uploadBlogFile(data.file);
-				const coverImageId = res.$id;
-				data.coverImageId = coverImageId;
-			}
-			data.authorId = user.$id;
-			data.name = getNameFromEmail(user.name);
-			if (data.coverImageId) {
-				console.log('data before update', data);
-				try {
-					await blogService.updateBlog(blogId, data);
-					notify(`Blog post updated successfully`, 'success', 3000);
-					reset();
-					router.push('/blog');
-				} catch (error) {
-					console.error('Error updating blog post :: ', error);
-					notify(`Error updating blog post`, 'error', 3000);
-				} finally {
-					setLoading(false);
-				}
-			}
-		} catch (error) {
-			console.error('Error uploading file :: ', error);
+	useEffect(() => {
+		if (blogId) {
+			handleGetBlog(blogId);
 		}
-	};
+	}, [blogId, handleGetBlog]);
 
-	const handleUpload = async (data) => {
-		if (data.file) {
-			console.log(data);
-			setLoading(true);
-			try {
-				const res = await blogService.uploadBlogFile(data.file);
-				const coverImageId = res.$id;
-				data.coverImageId = coverImageId;
-				data.authorId = user.$id;
-				data.name = getNameFromEmail(user.name);
-				if (data.coverImageId) {
-					console.log('data', data);
-					try {
-						await blogService.createBlog(data);
-						notify(
-							`Blog post created successfully`,
-							'success',
-							3000
-						);
-						reset();
-					} catch (error) {
-						console.error('Error creating blog post :: ', error);
-						notify(`Error creating blog post`, 'error', 3000);
-					} finally {
-						setLoading(false);
-					}
-				}
-			} catch (error) {
-				console.error('Error uploading file :: ', error);
-			}
-		} else {
-			notify(`file is required`, 'warning', 3000);
-		}
-	};
-
-	const onSubmit = async (data) => {
-		if (!blogId) {
-			handleUpload(data);
-		} else {
-			handleUpdate(data);
-		}
-	};
-
-	const getBlog = useCallback(
+	const handleGetBlog = useCallback(
 		async (slug) => {
 			setPopupLoading(true);
 			try {
@@ -169,11 +106,79 @@ const BlogEditor = ({ blogId }) => {
 		[reset]
 	);
 
-	useEffect(() => {
-		if (blogId) {
-			getBlog(blogId);
+	const uploadBlog = async (data) => {
+		setLoading(true);
+		try {
+			if (data.file) {
+				const res = await blogService.uploadBlogFile(data.file);
+				const coverImageId = res.$id;
+				data.coverImageId = coverImageId;
+			}
+			data.authorId = user.$id;
+			data.name = getNameFromEmail(user.name);
+			if (data.coverImageId) {
+				try {
+					await blogService.updateBlog(blogId, data);
+					notify(`Blog post updated successfully`, 'success', 3000);
+					reset();
+					router.push('/blog');
+				} catch (error) {
+					console.error('Error updating blog post :: ', error);
+					notify(`Error updating blog post`, 'error', 3000);
+				} finally {
+					setLoading(false);
+				}
+			}
+		} catch (error) {
+			console.error('Error uploading file :: ', error);
 		}
-	}, [blogId, getBlog]);
+	};
+
+	const updateBlog = async (data) => {
+		if (data.file) {
+			console.log(data);
+			setLoading(true);
+			try {
+				const res = await blogService.uploadBlogFile(data.file);
+				const coverImageId = res.$id;
+				data.coverImageId = coverImageId;
+				data.authorId = user.$id;
+				data.name = getNameFromEmail(user.name);
+				if (data.coverImageId) {
+					console.log('data', data);
+					try {
+						await blogService.createBlog(data);
+						notify(
+							`Blog post created successfully`,
+							'success',
+							3000
+						);
+						reset();
+					} catch (error) {
+						console.error('Error creating blog post :: ', error);
+						notify(`Error creating blog post`, 'error', 3000);
+					} finally {
+						setLoading(false);
+					}
+				}
+			} catch (error) {
+				console.error('Error uploading file :: ', error);
+			}
+		} else {
+			notify(`file is required`, 'warning', 3000);
+		}
+	};
+
+	const onSubmit = async (data) => {
+		if (!blogId) {
+			uploadBlog(data);
+		} else {
+			updateBlog(data);
+		}
+	};
+
+
+
 
 	return (
 		<Box
@@ -426,7 +431,7 @@ const BlogEditor = ({ blogId }) => {
 				<Divider my={6} />
 				<HStack justify="space-between">
 					<Button
-						onClick={() => getBlog('66ba5dec00350b232bdc')}
+						onClick={() => handleGetBlog('66ba5dec00350b232bdc')}
 						colorScheme="blue"
 						size="lg"
 						variant="outline"

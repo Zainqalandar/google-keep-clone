@@ -1,21 +1,26 @@
-import EmptyBlog from "@/components/blogs/empty-blog";
-import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
-import {fetchArchiveBlogs} from "@/store/featureBlogs";
-
+'use client';
+import EmptyBlog from '@/components/blogs/empty-blog';
+import { fetchArchiveBlogs } from '@/store/featureBlogs';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Blogs from '../blogs';
 
 const Archive = () => {
+	const {loading, error, blogs} = useSelector((state) => state.blog.archive);
+
+
     const dispatch = useDispatch();
 
-    const {loading, blogs, error} = useSelector((state) => state.blog.archive);
-    useEffect(() => {
-        dispatch(fetchArchiveBlogs());
-    }, [dispatch]);
-    return (
-        <>
-            <EmptyBlog type='archive' text='No Archive Blogs Available' />
-        </>
-    )
-}
+	useEffect(() => {
+		dispatch(fetchArchiveBlogs());
+	}, [dispatch]);
 
-export default Archive
+	return (
+		<>
+        <Blogs blogs={blogs} loading={loading} error={error} />
+			<EmptyBlog type='archive' text='No Archive Blogs Available' />
+		</>
+	);
+};
+
+export default Archive;

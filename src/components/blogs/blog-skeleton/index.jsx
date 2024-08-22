@@ -17,7 +17,7 @@ const BlogSkeleton = () => {
 				<Skeleton height="40px" w="60%" />
 
 				<HStack spacing={4}>
-					<Skeleton circle size="md">
+					<Skeleton circle="true" size="md">
 						<Avatar size="md" />
 					</Skeleton>
 					<VStack align="start" spacing={0}>

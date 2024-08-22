@@ -1,7 +1,4 @@
 'use client';
-import React, { useEffect } from 'react';
-import { fetchPublishBlogs } from '@/store/featureBlogs';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { usePathname } from 'next/navigation';
 import {
@@ -17,7 +14,6 @@ import {
 	useColorModeValue,
 	Badge,
 } from '@chakra-ui/react';
-import blogService from '@/appwrite/BlogService';
 import {
 	formatDate,
 	getColorFromId,
@@ -27,26 +23,45 @@ import {
 import MenuButtons from './menu-btns';
 import BlogSkeleton from './blog-skeleton';
 import RelatedPosts from './related-posts';
-import EmptyBlog from "@/components/blogs/empty-blog";
+import EmptyBlog from '@/components/blogs/empty-blog';
+import blogService from '@/appwrite/BlogService';
 
-const Blogs = ({blogs, loading}) => {
+const BlogBadge = ({ isArchived, isDeleted }) => {
+	let badgeText = 'New';
+	let badgeColor = 'green';
+
+	switch (true) {
+		case isArchived && !isDeleted:
+			badgeText = 'Archived';
+			badgeColor = 'blue';
+			break;
+		case !isArchived && isDeleted:
+			badgeText = 'Deleted';
+			badgeColor = 'red';
+			break;
+		case !isArchived && !isDeleted:
+			badgeText = 'Published';
+			badgeColor = 'purple';
+			break;
+		// default:
+		// 	badgeText = 'New';
+		// 	badgeColor = 'green';
+		// 	break;
+	}
+
+	return (
+		<Badge ml="3" colorScheme={badgeColor}>
+			{badgeText}
+		</Badge>
+	);
+};
+
+const Blogs = ({ blogs, error, loading }) => {
 	const bgColor = useColorModeValue('white', 'gray.800');
 	const textColor = useColorModeValue('gray.700', 'gray.200');
 	const accentColor = useColorModeValue('purple.600', 'purple.400');
-	const personalPath = usePathname()
 
-	const user = useSelector((state) => state.user);
-
-	console.log('user', user)
-
-
-
-	let isPersonal = personalPath === '/blog'
-	
-
-
-
-	console.log('State :: my-blogs', blogs);
+	console.log('State :: blogs', blogs);
 
 	return (
 		<Box
@@ -113,6 +128,15 @@ const Blogs = ({blogs, loading}) => {
 															New
 														</Badge>
 													)}
+
+													<BlogBadge
+														isArchived={
+															blog?.is_archived
+														}
+														isDeleted={
+															blog?.is_deleted
+														}
+													/>
 												</Text>
 												<Text
 													fontSize="sm"
@@ -135,12 +159,12 @@ const Blogs = ({blogs, loading}) => {
 												</Text>
 											</VStack>
 										</HStack>
-										{/*{blog?.authorId ===user.userData?.$id && <MenuButtons*/}
-										{/*	blogId={blog?.$id}*/}
-										{/*	blogFileId={blog?.coverImageId}*/}
-										{/*	fetchBlogs={fetchBlogs}*/}
-										{/*	userId={userId}*/}
-										{/*/>}*/}
+										{/* {blog?.authorId ===user.userData?.$id && <MenuButtons
+											blogId={blog?.$id}
+											blogFileId={blog?.coverImageId}
+											fetchBlogs={fetchBlogs}
+											userId={userId}
+										/>} */}
 									</HStack>
 								</VStack>
 
@@ -169,13 +193,13 @@ const Blogs = ({blogs, loading}) => {
 							</div>
 						))
 						.reverse()}
-					{
+					{/* {
 						!blogs.length && <EmptyBlog type='blog' text='No Blogs Available' />
-					}
+					} */}
 				</>
 			)}
 
-			{!isPersonal && <RelatedPosts/>}
+			{/* {!isPersonal && <RelatedPosts/>} */}
 		</Box>
 	);
 };
