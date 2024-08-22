@@ -33,7 +33,7 @@ export const fetchPersonalBlogs = createAsyncThunk(
 			const response = await blogService.getPersonalBlogs(queries);
 			return response.documents;
 		} catch (error) {
-			console.log('Error fetching blogs', error);
+			console.log('Error fetching my-blogs', error);
 			return rejectWithValue(error.message);
 		}
 	}
@@ -49,7 +49,7 @@ export const fetchPublishBlogs = createAsyncThunk(
 			console.log('response', response)
 			return response.documents;
 		} catch (error) {
-			console.log('Error fetching blogs', error);
+			console.log('Error fetching my-blogs', error);
 			return rejectWithValue(error.message);
 		}
 	}
@@ -59,11 +59,11 @@ export const fetchArchiveBlogs = createAsyncThunk(
 	'featureBlogs/fetchArchiveBlogs',
 	async (_, { rejectWithValue }) => {
 		try {
-			let queries = [Query.equal('status', 'archive')]
+			let queries = [Query.equal('is_archived', true), Query.equal('is_deleted', false)]
 			const response = await blogService.getArchiveBlogs(queries);
 			return response.documents;
 		} catch (error) {
-			console.log('Error fetching blogs', error);
+			console.log('Error fetching my-blogs', error);
 			return rejectWithValue(error.message);
 		}
 	}
@@ -77,7 +77,7 @@ export const fetchBinBlogs = createAsyncThunk(
 			const response = await blogService.getBinBlogs(queries);
 			return response.documents;
 		} catch (error) {
-			console.log('Error fetching blogs', error);
+			console.log('Error fetching my-blogs', error);
 			return rejectWithValue(error.message);
 		}
 	}

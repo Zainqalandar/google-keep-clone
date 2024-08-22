@@ -137,7 +137,7 @@ const Navbar = () => {
 									</PopoverContent>
 								</Popover>
 								<Button
-									onClick={() => router.push('/my-blogs')}
+									onClick={() => router.push('/blogs')}
 									bg={bg}
 									color="gray.500"
 									display="inline-flex"
