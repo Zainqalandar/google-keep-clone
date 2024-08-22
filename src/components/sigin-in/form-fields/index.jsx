@@ -7,7 +7,6 @@ import {
 	Button,
 	FormErrorMessage,
 	FormControl,
-	FormLabel,
 } from '@chakra-ui/react';
 import FormFieldsContent from './form-fields-content';
 import authService from '@/appwrite/auth';
@@ -18,21 +17,23 @@ import { useNotification } from '@/lib/provider/context/NotificationProvider';
 import { getUserDetail } from '@/store/feature-user';
 import { useDispatch } from 'react-redux';
 import nookies from 'nookies';
+import FormInputField from './form-input-field';
+
 
 const FormFields = () => {
-	const dispatch = useDispatch();
 	const [loading, setLoading] = useState(false);
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm();
+
+	const dispatch = useDispatch();
 	const router = useRouter();
 	const notify = useNotification();
 
 	const onSubmit = async (data) => {
 		setLoading(true);
-		console.log('data', data);
 		try {
 			let activeUserData = await authService.login(
 				data.email,
@@ -60,7 +61,6 @@ const FormFields = () => {
 		}
 	};
 
-	console.log('error', errors);
 	return (
 		<Stack
 			bg={'gray.50'}
@@ -72,56 +72,36 @@ const FormFields = () => {
 			<FormFieldsContent />
 			<Box as={'form'} mt={10}>
 				<Stack spacing={4}>
-					<FormControl id="email" isInvalid={errors.email}>
-						<Input
-							type="email"
-							{...register('email', {
-								required: 'Email field is required',
-								pattern: {
-									value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-									message: 'Invalid email format',
-								},
-							})}
-							placeholder="Email address"
-							bg={'gray.100'}
-							border={0}
-							color={'gray.500'}
-							_placeholder={{
-								color: 'gray.500',
-							}}
-						/>
-						{errors.email && (
-							<FormErrorMessage>
-								{errors.email.message}
-							</FormErrorMessage>
-						)}
-					</FormControl>
+					<FormInputField
+						id="email"
+						type="email"
+						placeholder="Email address"
+						register={register}
+						errors={errors}
+						validation={{
+							required: 'Email field is required',
+							pattern: {
+								value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+								message: 'Invalid email format',
+							},
+						}}
+					/>
 
-					<FormControl id="password" isInvalid={errors.password}>
-						<Input
-							type="password"
-							{...register('password', {
-								required: 'Password is required',
-								minLength: {
-									value: 8,
-									message:
-										'Password must be at least 8 characters long',
-								},
-							})}
-							placeholder="********"
-							bg={'gray.100'}
-							border={0}
-							color={'gray.500'}
-							_placeholder={{
-								color: 'gray.500',
-							}}
-						/>
-						{errors.password && (
-							<FormErrorMessage>
-								{errors.password.message}
-							</FormErrorMessage>
-						)}
-					</FormControl>
+					<FormInputField
+						id="password"
+						type="password"
+						placeholder="********"
+						register={register}
+						errors={errors}
+						validation={{
+							required: 'Password is required',
+							minLength: {
+								value: 8,
+								message:
+									'Password must be at least 8 characters long',
+							},
+						}}
+					/>
 					<Button
 						fontFamily={'heading'}
 						bg={'gray.200'}

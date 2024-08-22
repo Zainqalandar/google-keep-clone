@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation';
 import { useNotification } from '@/lib/provider/context/NotificationProvider';
 import { useDispatch } from 'react-redux';
 import FormFieldsContent from '@/components/sigin-in/form-fields/form-fields-content';
+import FormInputField from '@/components/sigin-in/form-fields/form-input-field';
 
 const FormFieldSignUp = () => {
 	const dispatch = useDispatch();
@@ -57,76 +58,48 @@ const FormFieldSignUp = () => {
 			<FormFieldsContent />
 			<Box as={'form'} mt={10}>
 				<Stack spacing={4}>
-					<FormControl id="username" isInvalid={errors.username}>
-						<Input
-							type="text"
-							{...register('username', {
-								required: 'Username is required',
-							})}
-							placeholder="Username"
-							bg={'gray.100'}
-							border={0}
-							color={'gray.500'}
-							_placeholder={{
-								color: 'gray.500',
-							}}
-						/>
-						{errors.username && (
-							<FormErrorMessage>
-								{errors.username.message}
-							</FormErrorMessage>
-						)}
-					</FormControl>
-					<FormControl id="email" isInvalid={errors.email}>
-						<Input
-							type="email"
-							{...register('email', {
-								required: 'Email field is required',
-								pattern: {
-									value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-									message: 'Invalid email format',
-								},
-							})}
-							placeholder="Email address"
-							bg={'gray.100'}
-							border={0}
-							color={'gray.500'}
-							_placeholder={{
-								color: 'gray.500',
-							}}
-						/>
-						{errors.email && (
-							<FormErrorMessage>
-								{errors.email.message}
-							</FormErrorMessage>
-						)}
-					</FormControl>
+					<FormInputField
+						id="username"
+						type="text"
+						placeholder="Username"
+						register={register}
+						errors={errors}
+						validation={{
+							required: 'Username is required',
+						}}
+					/>
 
-					<FormControl id="password" isInvalid={errors.password}>
-						<Input
-							type="password"
-							{...register('password', {
-								required: 'Password is required',
-								minLength: {
-									value: 8,
-									message:
-										'Password must be at least 8 characters long',
-								},
-							})}
-							placeholder="********"
-							bg={'gray.100'}
-							border={0}
-							color={'gray.500'}
-							_placeholder={{
-								color: 'gray.500',
-							}}
-						/>
-						{errors.password && (
-							<FormErrorMessage>
-								{errors.password.message}
-							</FormErrorMessage>
-						)}
-					</FormControl>
+					<FormInputField
+						id="email"
+						type="email"
+						placeholder="Email address"
+						register={register}
+						errors={errors}
+						validation={{
+							required: 'Email field is required',
+							pattern: {
+								value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+								message: 'Invalid email format',
+							},
+						}}
+					/>
+
+					<FormInputField
+						id="password"
+						type="password"
+						placeholder="********"
+						register={register}
+						errors={errors}
+						validation={{
+							required: 'Password is required',
+							minLength: {
+								value: 8,
+								message:
+									'Password must be at least 8 characters long',
+							},
+						}}
+					/>
+					
 					<Button
 						fontFamily={'heading'}
 						bg={'gray.200'}

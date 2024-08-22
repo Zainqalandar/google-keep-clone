@@ -1,7 +1,4 @@
 'use client';
-import React, { useEffect } from 'react';
-import { fetchPublishBlogs } from '@/store/featureBlogs';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { usePathname } from 'next/navigation';
 import {
@@ -17,7 +14,6 @@ import {
 	useColorModeValue,
 	Badge,
 } from '@chakra-ui/react';
-import blogService from '@/appwrite/BlogService';
 import {
 	formatDate,
 	getColorFromId,
@@ -27,37 +23,45 @@ import {
 import MenuButtons from './menu-btns';
 import BlogSkeleton from './blog-skeleton';
 import RelatedPosts from './related-posts';
-import EmptyBlog from "@/components/blogs/empty-blog";
+import EmptyBlog from '@/components/blogs/empty-blog';
+import blogService from '@/appwrite/BlogService';
 
-const Blogs = () => {
+const BlogBadge = ({ isArchived, isDeleted }) => {
+	let badgeText = 'New';
+	let badgeColor = 'green';
+
+	switch (true) {
+		case isArchived && !isDeleted:
+			badgeText = 'Archived';
+			badgeColor = 'blue';
+			break;
+		case !isArchived && isDeleted:
+			badgeText = 'Deleted';
+			badgeColor = 'red';
+			break;
+		case !isArchived && !isDeleted:
+			badgeText = 'Published';
+			badgeColor = 'purple';
+			break;
+		// default:
+		// 	badgeText = 'New';
+		// 	badgeColor = 'green';
+		// 	break;
+	}
+
+	return (
+		<Badge ml="3" colorScheme={badgeColor}>
+			{badgeText}
+		</Badge>
+	);
+};
+
+const Blogs = ({ blogs, error, loading }) => {
 	const bgColor = useColorModeValue('white', 'gray.800');
 	const textColor = useColorModeValue('gray.700', 'gray.200');
 	const accentColor = useColorModeValue('purple.600', 'purple.400');
-	const personalPath = usePathname()
 
-
-	// const { blogs, loading, error } = useSelector((state) => state.publish);
-	const State = useSelector((state) => state);
-
-	const dispatch = useDispatch();
-
-	let isPersonal = personalPath === '/blog'
-
-	// let userId = isPersonal ? user.userData?.$id : null
-	// useEffect(() => {
-
-	// 	console.log('personalPath', personalPath)
-	// 	dispatch(fetchBlogs(userId));
-	// }, [dispatch]);
-	
-	useEffect(() => {
-		dispatch(fetchPublishBlogs());
-	}, [dispatch]);
-
-
-	// console.log('loading :: blogs', loading);
-	// console.log('blogs :: blogs', blogs);
-	console.log('State :: blogs', State);
+	console.log('State :: blogs', blogs);
 
 	return (
 		<Box
@@ -69,7 +73,133 @@ const Blogs = () => {
 			mx="auto"
 			my={10}
 		>
-			blogs
+			{loading ? (
+				<BlogSkeleton />
+			) : (
+				<>
+					{blogs
+						?.map((blog, index) => (
+							<div key={index}>
+								<VStack spacing={6} align="start">
+									<Image
+										src={blogService.getBlogFile(
+											blog?.coverImageId
+										)}
+										alt="Blog image"
+										borderradius="md"
+										w="full"
+										h="400px"
+										objectFit="cover"
+										unoptimized="true"
+									/>
+									<Heading size="2xl" color={accentColor}>
+										{blog?.title}
+									</Heading>
+									<HStack
+										spacing={4}
+										w="full"
+										justify="space-between"
+									>
+										<HStack spacing={4}>
+											<Avatar
+												src="/zain.qalandar.jpg"
+												name={getNameFromEmail(
+													blog?.name
+												)}
+												size="md"
+												bg={getColorFromId(
+													blog?.authorId
+												)}
+											/>
+
+											<VStack align="start" spacing={0}>
+												<Text
+													fontWeight="bold"
+													color={textColor}
+												>
+													{blog?.name}
+													{getTimeSinceCreation(
+														blog?.$createdAt
+													).isNew && (
+														<Badge
+															ml="3"
+															colorScheme="green"
+														>
+															New
+														</Badge>
+													)}
+
+													<BlogBadge
+														isArchived={
+															blog?.is_archived
+														}
+														isDeleted={
+															blog?.is_deleted
+														}
+													/>
+												</Text>
+												<Text
+													fontSize="sm"
+													color={textColor}
+												>
+													{formatDate(
+														blog?.$createdAt
+													)}
+													{getTimeSinceCreation(
+														blog?.$createdAt
+													).isNew && (
+														<Text as="span" ml="2">
+															{
+																getTimeSinceCreation(
+																	blog?.$createdAt
+																).timeString
+															}
+														</Text>
+													)}
+												</Text>
+											</VStack>
+										</HStack>
+										{/* {blog?.authorId ===user.userData?.$id && <MenuButtons
+											blogId={blog?.$id}
+											blogFileId={blog?.coverImageId}
+											fetchBlogs={fetchBlogs}
+											userId={userId}
+										/>} */}
+									</HStack>
+								</VStack>
+
+								<Divider my={6} />
+
+								{/* Blog Content */}
+								<VStack spacing={4} align="start">
+									<Text
+										dangerouslySetInnerHTML={{
+											__html: blog?.content,
+										}}
+										fontSize="lg"
+										color={textColor}
+									/>
+
+									<Link
+										color={accentColor}
+										fontWeight="bold"
+										href="#"
+									>
+										Read more
+									</Link>
+								</VStack>
+
+								<Divider my={6} />
+							</div>
+						))
+						.reverse()}
+					{/* {
+						!blogs.length && <EmptyBlog type='blog' text='No Blogs Available' />
+					} */}
+				</>
+			)}
+
+			{/* {!isPersonal && <RelatedPosts/>} */}
 		</Box>
 	);
 };

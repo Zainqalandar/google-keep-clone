@@ -59,8 +59,8 @@ export const fetchArchiveBlogs = createAsyncThunk(
 	'featureBlogs/fetchArchiveBlogs',
 	async (_, { rejectWithValue }) => {
 		try {
-			let queries = [Query.equal('status', 'archive')]
-			const response = await blogService.getArchiveBlogs(queries);
+			let queries = [Query.equal('is_archived', true), Query.equal('is_deleted', false)]
+			const response = await blogService.getBlogs(queries);
 			return response.documents;
 		} catch (error) {
 			console.log('Error fetching blogs', error);

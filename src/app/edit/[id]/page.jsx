@@ -1,4 +1,3 @@
-'use client';
 import BlogEditor from '@/components/ui/BlogEditor';
 import React from 'react';
 
