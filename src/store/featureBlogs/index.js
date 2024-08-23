@@ -5,17 +5,17 @@ import { Query } from 'appwrite'; // Import Query from the Appwrite SDK
 const initialState = {
 	publish: {
 		blogs: [],
-		loading: false,
+		loading: true,
 		error: null,
 	},
 	archive: {
 		blogs: [],
-		loading: false,
+		loading: true,
 		error: null,
 	},
 	bin : {
 		blogs: [],
-		loading: false,
+		loading: true,
 		error: null,
 	},
 	personalBlogs: {
@@ -41,18 +41,21 @@ export const fetchPersonalBlogs = createAsyncThunk(
 
 
 export const fetchPublishBlogs = createAsyncThunk(
-	'featureBlogs/fetchPublishBlogs',
-	async (_, { rejectWithValue }) => {
-		try {
-			let queries = [Query.equal('status', 'published')];
-			const response = await blogService.getBlogs(queries);
-			console.log('response', response)
-			return response.documents;
-		} catch (error) {
-			console.log('Error fetching my-blogs', error);
-			return rejectWithValue(error.message);
-		}
-	}
+    'featureBlogs/fetchPublishBlogs',
+    async (authId = null, { rejectWithValue }) => {
+        try {
+            let queries = [Query.equal('is_archived', false), Query.equal('is_deleted', false)];
+            if (authId) {
+                queries.push(Query.equal('authorId', authId));
+            }
+            const response = await blogService.getBlogs(queries);
+            console.log('response :: length', response.documents.length);
+            return response.documents;
+        } catch (error) {
+            console.log('Error fetching my-blogs', error);
+            return rejectWithValue(error.message);
+        }
+    }
 );
 
 export const fetchArchiveBlogs = createAsyncThunk(
@@ -72,12 +75,14 @@ export const fetchArchiveBlogs = createAsyncThunk(
 export const fetchBinBlogs = createAsyncThunk(
 	'featureBlogs/fetchBinBlogs',
 	async (_, { rejectWithValue }) => {
-		let queries = [Query.equal('status', 'bin')]
+		let queries = [Query.equal('is_archived', false), Query.equal('is_deleted', true)]
 		try {
-			const response = await blogService.getBinBlogs(queries);
+			// const response = await blogService.getBinBlogs(queries);
+			const response = await blogService.getBlogs(queries);
+			console.log('response', response)
 			return response.documents;
 		} catch (error) {
-			console.log('Error fetching my-blogs', error);
+			console.log('Error fetching my-blogs', error.message);
 			return rejectWithValue(error.message);
 		}
 	}
@@ -116,6 +121,22 @@ const featureBlogsSlice = createSlice({
 				state.archive.loading = false;
 				state.archive.error = action.payload;
 			});
+
+			builder
+			.addCase(fetchBinBlogs.pending, (state) => {
+				state.bin.loading = true;
+				state.bin.error = null;
+			})
+			.addCase(fetchBinBlogs.fulfilled, (state, action) => {
+				state.bin.loading = false;
+				state.bin.blogs = action.payload;
+			})
+			.addCase(fetchBinBlogs.rejected, (state, action) => {
+				console.log('error dfdf', action.payload)
+				state.bin.loading = false;
+				state.bin.error = action.payload;
+			}
+		);
 
 		builder
 			.addCase(fetchPersonalBlogs.pending, (state) => {

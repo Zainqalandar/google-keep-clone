@@ -1,10 +1,10 @@
-import Blogs from '@/components/blogs';
+import Published from '@/components/published';
 import React from 'react';
 
 const Blog = () => {
 	return (
 		<div>
-			<Blogs />
+			<Published />
 		</div>
 	);
 };

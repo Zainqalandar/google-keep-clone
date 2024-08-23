@@ -46,7 +46,7 @@ const SedbarWrapper = ({ children }) => {
 		return <>{children}</>;
 	}
 
-	if (pathname === '/' || pathname === '/my-blogs') {
+	if (pathname === '/' || pathname === '/blogs') {
 		return (
 			<>
 				<Navbar />

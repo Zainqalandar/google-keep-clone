@@ -78,6 +78,8 @@ class BlogService {
 			status,
 			coverImageId,
 			name,
+			is_deleted: false,
+			is_archived: false,
 		});
 		try {
 			return await this.databases.updateDocument(

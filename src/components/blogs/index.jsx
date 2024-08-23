@@ -56,12 +56,20 @@ const BlogBadge = ({ isArchived, isDeleted }) => {
 	);
 };
 
-const Blogs = ({ blogs, error, loading }) => {
+const Blogs = ({ blogs, error, loading = true }) => {
 	const bgColor = useColorModeValue('white', 'gray.800');
 	const textColor = useColorModeValue('gray.700', 'gray.200');
 	const accentColor = useColorModeValue('purple.600', 'purple.400');
 
 	console.log('State :: blogs', blogs);
+
+	if (loading) {
+		return <BlogSkeleton />;
+	}
+
+	if (error) {
+		return <Text>Error fetching blogs</Text>;
+	}
 
 	return (
 		<Box
@@ -193,9 +201,10 @@ const Blogs = ({ blogs, error, loading }) => {
 							</div>
 						))
 						.reverse()}
-					{/* {
-						!blogs.length && <EmptyBlog type='blog' text='No Blogs Available' />
-					} */}
+
+						{
+							blogs.length === 0 && <EmptyBlog type="blog" text="No blogs found" />
+						}
 				</>
 			)}
 
