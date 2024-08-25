@@ -22,8 +22,6 @@ class BlogService {
 		coverImageId,
 		name,
 	}) {
-		
-
 		try {
 			const response = await this.databases.createDocument(
 				config.databaseId,
@@ -142,6 +140,73 @@ class BlogService {
 	}
 	getBlogFile(fileId) {
 		return this.bucket.getFilePreview(config.storageBlogId, fileId);
+	}
+
+	async archived(blogId) {
+		try {
+			return await this.databases.updateDocument(
+				config.databaseId,
+				config.collectionBlogId,
+				blogId,
+				{
+					is_archived: true,
+					is_deleted: false,
+				}
+			);
+		} catch (error) {
+			console.log('Appwrite serive :: archived :: error', error);
+			return false;
+		}
+	}
+
+	async unarchived(blogId) {
+		try {
+			return await this.databases.updateDocument(
+				config.databaseId,
+				config.collectionBlogId,
+				blogId,
+				{
+					is_archived: false,
+					is_deleted: false,
+				}
+			);
+		} catch (error) {
+			console.log('Appwrite serive :: unarchived :: error', error);
+			return false;
+		}
+	}
+
+	async moveToBin(blogId) {
+		try {
+			return await this.databases.updateDocument(
+				config.databaseId,
+				config.collectionBlogId,
+				blogId,
+				{
+					is_archived: false,
+					is_deleted: true,
+				}
+			);
+		} catch (error) {
+			console.log('Appwrite serive :: moveToBin :: error', error);
+			return false;
+		}
+	}
+	async restoreFromBin(blogId) {
+		try {
+			return await this.databases.updateDocument(
+				config.databaseId,
+				config.collectionBlogId,
+				blogId,
+				{
+					is_archived: false,
+					is_deleted: false,
+				}
+			);
+		} catch (error) {
+			console.log('Appwrite serive :: restoreFromBin :: error', error);
+			return false;
+		}
 	}
 }
 
