@@ -3,10 +3,7 @@ import React, { useState } from 'react';
 import {
 	Box,
 	Stack,
-	Input,
 	Button,
-	FormErrorMessage,
-	FormControl,
 } from '@chakra-ui/react';
 import FormFieldsContent from './form-fields-content';
 import authService from '@/appwrite/auth';
@@ -33,31 +30,42 @@ const FormFields = () => {
 	const notify = useNotification();
 
 	const onSubmit = async (data) => {
-		setLoading(true);
-		try {
-			let activeUserData = await authService.login(
-				data.email,
-				data.password
-			);
-			if (activeUserData) {
-				authService.getCurrentUser().then((userData) => {
-					if (userData) {
-						nookies.set(null, 'userId', userData.$id, {
-							path: '/',
-						});
-						dispatch(getUserDetail(userData));
-						notify('Logged in successfully', 'success', 3000);
-						router.push('/');
-					} else {
-						dispatch(getUserDetail({}));
-					}
-				});
+		const allCookies = nookies.get();
+        const authToken = allCookies.userId;
+		console.log('authToken', authToken)
+		if(!authToken){
+			try {
+				setLoading(true);
+				let activeUserData = await authService.login(
+					data.email,
+					data.password
+				);
+				if (activeUserData) {
+					authService.getCurrentUser().then((userData) => {
+						if (userData) {
+							nookies.set(null, 'userId', userData.$id, {
+								path: '/',
+							});
+							dispatch(getUserDetail(userData));
+							notify('Logged in successfully', 'success', 3000);
+							router.push('/');
+						} else {
+							dispatch(getUserDetail({}));
+						}
+					});
+				}else {
+					notify('Logged in successfully', 'success', 3000);
+					router.push('/');
+				}
+			} catch (error) {
+				console.error('Error occure in login :: ', error);
+				notify(`${error.message}`, 'error', 3000);
+			} finally {
+				setLoading(false);
 			}
-		} catch (error) {
-			console.error('Error occure in login :: ', error);
-			notify(`${error.message}`, 'error', 3000);
-		} finally {
-			setLoading(false);
+		}else {
+			notify('Already logged in', 'success', 3000);
+			router.push('/');
 		}
 	};
 

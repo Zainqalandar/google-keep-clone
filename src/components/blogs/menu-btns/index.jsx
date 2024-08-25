@@ -5,16 +5,22 @@ import {
 	MenuItem,
 	Menu,
 	IconButton,
+	Box,
 } from '@chakra-ui/react';
 import blogService from '@/appwrite/BlogService';
 import { FiEdit, FiCopy } from 'react-icons/fi';
+import { LuArchiveRestore } from "react-icons/lu";
 import { HiArchiveBoxXMark } from 'react-icons/hi2';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import { useNotification } from '@/lib/provider/context/NotificationProvider';
 import { useRouter } from 'next/navigation';
 import ConfirmationDeletePopup from '@/components/ui/ConfirmationDeletePopup';
+import { fetchPublishBlogs } from '@/store/featureBlogs';
+import { RiDeleteBin3Line } from "react-icons/ri";
+import { MdOutlineRestoreFromTrash } from "react-icons/md";
 
-const MenuButtons = ({ blogId, blogFileId, fetchBlogs, userId }) => {
+
+const MenuButtons = ({ blogId, blogFileId, userId, isArchived, isDeleted }) => {
 	const router = useRouter();
 
 	const notify = useNotification();
@@ -25,7 +31,7 @@ const MenuButtons = ({ blogId, blogFileId, fetchBlogs, userId }) => {
 			await blogService.deleteBlog(blogId);
 			await blogService.deleteBlogFile(blogFileId);
 			notify('Blog deleted successfully', 'success');
-			dispatch(fetchBlogs(userId));
+			dispatch(fetchPublishBlogs(userId));
 		} catch (error) {
 			console.log('MegaBlog :: handleDelete :: error', error);
 			notify('Error deleting blog', 'error');
@@ -40,24 +46,46 @@ const MenuButtons = ({ blogId, blogFileId, fetchBlogs, userId }) => {
 				aria-label="Options"
 			/>
 			<MenuList>
-				<MenuItem
+				{( !isArchived && !isDeleted ) && <MenuItem
 					onClick={() => router.push(`/edit/${blogId}`)}
-					icon={<FiEdit />}
+					icon={<Box as={FiEdit} boxSize={4} />}
 				>
 					Edit
-				</MenuItem>
-				<MenuItem icon={<FiCopy />}>Duplicate</MenuItem>
-				<MenuItem
+				</MenuItem>}
+				<MenuItem 
+				// icon={<FiCopy />}
+				icon={<Box as={FiCopy} boxSize={4} />}
+				>Duplicate</MenuItem>
+				{( !isArchived && !isDeleted ) && <MenuItem
 					onClick={() => router.push(`/edit/${blogId}`)}
-					icon={<HiArchiveBoxXMark />}
+					icon={<Box as={HiArchiveBoxXMark} boxSize={4} />}
 				>
 					Archive
-				</MenuItem>
-				<ConfirmationDeletePopup
+				</MenuItem>}
+				{( isArchived && !isDeleted ) && <MenuItem
+					// onClick={() => router.push(`/edit/${blogId}`)}
+					icon={<Box as={HiArchiveBoxXMark} boxSize={4} />}
+				>
+					Unarchive
+				</MenuItem>}
+				{( !isArchived && isDeleted ) && <MenuItem
+					// onClick={() => router.push(`/edit/${blogId}`)}
+					icon={<Box as={MdOutlineRestoreFromTrash} boxSize={5} />}
+				>
+					Restore
+				</MenuItem>}
+				{( !isArchived && !isDeleted ) && <MenuItem
+					// onClick={() => router.push(`/edit/${blogId}`)}
+					icon={<Box as={RiDeleteBin3Line} boxSize={4} />}
+				>
+					Move to bin
+				</MenuItem>}
+				{( !isArchived && isDeleted ) && <ConfirmationDeletePopup
 					blogId={blogId}
 					blogFileId={blogFileId}
 					onHandleDelete={handleDelete}
-				/>
+					isArchived={isArchived}
+				/>}
 			</MenuList>
 		</Menu>
 	);

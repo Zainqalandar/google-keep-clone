@@ -92,6 +92,7 @@ const Navbar = () => {
 							<Box onClick={() => router.push('/')}>
 								<HStack>
 									<Image
+									cursor="pointer"
 										src="/google-keep.png"
 										alt="Logo"
 										boxSize="40px"

@@ -19,9 +19,7 @@ export default function RootLayout({ children }) {
 			<body className={inter.className}>
 				<Providers>
 					<NotificationProvider>
-							<SedbarWrapper>
-							{children}
-							</SedbarWrapper>
+						<SedbarWrapper>{children}</SedbarWrapper>
 					</NotificationProvider>
 				</Providers>
 			</body>

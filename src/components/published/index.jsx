@@ -22,11 +22,11 @@ const Published = () => {
 	useEffect(() => {
         const userId = isPersonalUrl === '/my-blogs'? userDetail.$id : null;
 		dispatch(fetchPublishBlogs(userId));
-	}, [dispatch]);
+	}, [dispatch, isPersonalUrl, userDetail.$id]);
 
 
     return (
-        <Blogs blogs={blogs} loading={loading} error={error} />
+        <Blogs blogs={blogs} loading={loading} error={error} text='No blog found' userId={userDetail.$id} />
     )
 }
 

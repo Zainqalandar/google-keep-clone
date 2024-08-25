@@ -49,7 +49,6 @@ export const fetchPublishBlogs = createAsyncThunk(
                 queries.push(Query.equal('authorId', authId));
             }
             const response = await blogService.getBlogs(queries);
-            console.log('response :: length', response.documents.length);
             return response.documents;
         } catch (error) {
             console.log('Error fetching my-blogs', error);
@@ -60,9 +59,12 @@ export const fetchPublishBlogs = createAsyncThunk(
 
 export const fetchArchiveBlogs = createAsyncThunk(
 	'featureBlogs/fetchArchiveBlogs',
-	async (_, { rejectWithValue }) => {
+	async (authId = null, { rejectWithValue }) => {
 		try {
 			let queries = [Query.equal('is_archived', true), Query.equal('is_deleted', false)]
+			if (authId) {
+                queries.push(Query.equal('authorId', authId));
+            }
 			const response = await blogService.getBlogs(queries);
 			return response.documents;
 		} catch (error) {
@@ -74,8 +76,11 @@ export const fetchArchiveBlogs = createAsyncThunk(
 
 export const fetchBinBlogs = createAsyncThunk(
 	'featureBlogs/fetchBinBlogs',
-	async (_, { rejectWithValue }) => {
+	async (authId = null, { rejectWithValue }) => {
 		let queries = [Query.equal('is_archived', false), Query.equal('is_deleted', true)]
+		if (authId) {
+			queries.push(Query.equal('authorId', authId));
+		}
 		try {
 			// const response = await blogService.getBinBlogs(queries);
 			const response = await blogService.getBlogs(queries);

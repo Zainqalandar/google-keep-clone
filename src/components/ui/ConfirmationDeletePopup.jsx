@@ -14,8 +14,10 @@ import {
 	HStack,
 	useColorModeValue,
 	MenuItem,
+	Box,
 } from '@chakra-ui/react';
 import { FiTrash } from 'react-icons/fi';
+import { MdOutlineDeleteForever } from 'react-icons/md';
 
 const ConfirmationDeletePopup = ({ blogId, blogFileId, onHandleDelete }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -27,8 +29,11 @@ const ConfirmationDeletePopup = ({ blogId, blogFileId, onHandleDelete }) => {
 
 	return (
 		<>
-			<MenuItem onClick={onOpen} icon={<FiTrash />}>
-				Move to Bin
+			<MenuItem
+				onClick={onOpen}
+				icon={<Box as={MdOutlineDeleteForever} boxSize={5} />}
+			>
+				delete permanently
 			</MenuItem>
 
 			<Modal

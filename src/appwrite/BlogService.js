@@ -22,16 +22,7 @@ class BlogService {
 		coverImageId,
 		name,
 	}) {
-		console.log('CreateBlog ::', {
-			title,
-			content,
-			authorId,
-			tags,
-			status,
-			slug,
-			coverImageId,
-			name,
-		});
+		
 
 		try {
 			const response = await this.databases.createDocument(

@@ -73,7 +73,7 @@ const BlogEditor = ({ blogId }) => {
 					await blogService.updateBlog(blogId, data);
 					notify(`Blog post updated successfully`, 'success', 3000);
 					reset();
-					router.push('/blog');
+					router.push('/my-blogs');
 				} catch (error) {
 					console.error('Error updating blog post :: ', error);
 					notify(`Error updating blog post`, 'error', 3000);
@@ -97,7 +97,6 @@ const BlogEditor = ({ blogId }) => {
 				data.authorId = user.$id;
 				data.name = getNameFromEmail(user.name);
 				if (data.coverImageId) {
-					console.log('data', data);
 					try {
 						await blogService.createBlog(data);
 						notify(

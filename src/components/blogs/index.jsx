@@ -56,12 +56,10 @@ const BlogBadge = ({ isArchived, isDeleted }) => {
 	);
 };
 
-const Blogs = ({ blogs, error, loading = true }) => {
+const Blogs = ({ blogs, error, loading = true, text, userId }) => {
 	const bgColor = useColorModeValue('white', 'gray.800');
 	const textColor = useColorModeValue('gray.700', 'gray.200');
 	const accentColor = useColorModeValue('purple.600', 'purple.400');
-
-	console.log('State :: blogs', blogs);
 
 	if (loading) {
 		return <BlogSkeleton />;
@@ -90,9 +88,9 @@ const Blogs = ({ blogs, error, loading = true }) => {
 							<div key={index}>
 								<VStack spacing={6} align="start">
 									<Image
-										src={blogService.getBlogFile(
+										src={!(!blog?.is_archived && blog?.is_deleted)? blogService.getBlogFile(
 											blog?.coverImageId
-										)}
+										) : 'deleted_photo.png'}
 										alt="Blog image"
 										borderradius="md"
 										w="full"
@@ -100,7 +98,7 @@ const Blogs = ({ blogs, error, loading = true }) => {
 										objectFit="cover"
 										unoptimized="true"
 									/>
-									<Heading size="2xl" color={accentColor}>
+									<Heading size="2xl" color={accentColor} textDecoration={`${(!blog?.is_archived && blog?.is_deleted) && 'line-through'}`}>
 										{blog?.title}
 									</Heading>
 									<HStack
@@ -129,12 +127,14 @@ const Blogs = ({ blogs, error, loading = true }) => {
 													{getTimeSinceCreation(
 														blog?.$createdAt
 													).isNew && (
-														<Badge
-															ml="3"
-															colorScheme="green"
-														>
-															New
-														</Badge>
+														<>
+															{!(blog.is_deleted && !blog.is_archived) && <Badge
+																ml="3"
+																colorScheme="green"
+															>
+																New
+															</Badge>}
+														</>
 													)}
 
 													<BlogBadge
@@ -167,12 +167,16 @@ const Blogs = ({ blogs, error, loading = true }) => {
 												</Text>
 											</VStack>
 										</HStack>
-										{/* {blog?.authorId ===user.userData?.$id && <MenuButtons
-											blogId={blog?.$id}
-											blogFileId={blog?.coverImageId}
-											fetchBlogs={fetchBlogs}
-											userId={userId}
-										/>} */}
+										{blog?.authorId === userId && (
+											<MenuButtons
+												blogId={blog?.$id}
+												blogFileId={blog?.coverImageId}
+												// fetchBlogs={fetchBlogs}
+												isArchived={blog?.is_archived}
+												isDeleted={blog?.is_deleted}
+												userId={userId}
+											/>
+										)}
 									</HStack>
 								</VStack>
 
@@ -202,9 +206,9 @@ const Blogs = ({ blogs, error, loading = true }) => {
 						))
 						.reverse()}
 
-						{
-							blogs.length === 0 && <EmptyBlog type="blog" text="No blogs found" />
-						}
+					{blogs?.length === 0 && (
+						<EmptyBlog type="blog" text={text} />
+					)}
 				</>
 			)}
 
