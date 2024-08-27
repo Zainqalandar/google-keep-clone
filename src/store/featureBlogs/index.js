@@ -84,7 +84,6 @@ export const fetchBinBlogs = createAsyncThunk(
 		try {
 			// const response = await blogService.getBinBlogs(queries);
 			const response = await blogService.getBlogs(queries);
-			console.log('response', response)
 			return response.documents;
 		} catch (error) {
 			console.log('Error fetching my-blogs', error.message);

@@ -80,7 +80,7 @@ class BlogService {
 					content,
 					authorId,
 					tags,
-					status,
+					// status,
 					coverImageId,
 					name,
 				}

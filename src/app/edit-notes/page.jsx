@@ -1,4 +1,5 @@
 import BlogEditor from '@/components/ui/BlogEditor';
+import NewEditor from '@/components/ui/NewEditor';
 import NotesEditor from '@/components/ui/NotesEditor';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import React from 'react';
@@ -16,7 +17,8 @@ const EditNotes = () => {
 						<BlogEditor />
 					</TabPanel>
 					<TabPanel>
-						<NotesEditor />
+						{/* <NotesEditor /> */}
+						<NewEditor />
 					</TabPanel>
 				</TabPanels>
 			</Tabs>

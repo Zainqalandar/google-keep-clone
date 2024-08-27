@@ -25,17 +25,7 @@ const MenuButtons = ({ blogId, blogFileId, userId, isArchived, isDeleted }) => {
 	const notify = useNotification();
 	const dispatch = useDispatch();
 
-	const handleDelete = async (blogId, blogFileId) => {
-		try {
-			await blogService.deleteBlog(blogId);
-			await blogService.deleteBlogFile(blogFileId);
-			notify('Blog deleted successfully', 'success');
-			dispatch(fetchPublishBlogs(userId));
-		} catch (error) {
-			console.log('MegaBlog :: handleDelete :: error', error);
-			notify('Error deleting blog', 'error');
-		}
-	};
+	
 
 	const handleArchive = async (blogId) => {
 		try {
@@ -78,6 +68,20 @@ const MenuButtons = ({ blogId, blogFileId, userId, isArchived, isDeleted }) => {
 			notify('Error restoring blog from bin', 'error');
 		}
 	};
+
+	
+
+	const handleDelete = async (blogId, blogFileId) => {
+		try {
+			await blogService.deleteBlog(blogId);
+			await blogService.deleteBlogFile(blogFileId);
+			notify('Blog deleted successfully', 'success');
+			dispatch(fetchBinBlogs(userId));
+		} catch (error) {
+			console.log('MegaBlog :: handleDelete :: error', error);
+			notify('Error deleting blog', 'error');
+		}
+	}
 	return (
 		<Menu>
 			<MenuButton

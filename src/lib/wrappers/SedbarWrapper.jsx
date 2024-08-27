@@ -6,6 +6,7 @@ import SidebarWithHeader from '@/components/sidebar-new';
 import { fetchUserDetail } from '@/store/feature-user';
 import { useDispatch, useSelector } from 'react-redux';
 import Navbar from '@/components/navbar';
+import InfoBanner from '@/components/ui/InfoBanner';
 
 const SedbarWrapper = ({ children }) => {
 	const dispatch = useDispatch();
@@ -57,6 +58,7 @@ const SedbarWrapper = ({ children }) => {
 
 	return (
 		<>
+		<InfoBanner />
 			<SidebarWithHeader>{children}</SidebarWithHeader>
 		</>
 	);

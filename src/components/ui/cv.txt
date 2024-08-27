@@ -1,0 +1,55 @@
+
+Syed Zain Qalandar
+zainqlandar@gmail.com | (+92) 3174433473
+
+  @Zainqalandar                                                                                                            /syed-zain-qalandar 
+
+PROFESSIONAL SUMMARY
+ A passionate and detail-oriented Front-End Developer with over 2 years of experience in designing, developing, and maintaining user-friendly web applications. Proficient in modern web technologies such as React, Next.js, and Chakra UI. Adept at working in collaborative environments and delivering high-quality code in fast-paced settings. Seeking to contribute my skills and expertise to a dynamic development team.
+SKILLS
+Front-End Technologies: HTML5, CSS3, JavaScript, React, Next.js (App Router, Page Router)
+UI Frameworks: Chakra UI, Tailwind CSS, MUI
+Tools & Libraries: Redux, Axios, React-Router-Dom
+Version Control: Git, GitHub
+Backend Integration: Appwrite, firebase, API handling
+Design: Responsive Design, Component-Based Architecture
+EDUCATION
+Bachelor of Science in Information Technology (iii)
+Government Graduate College, Civil Lines, Sheikhupura
+August 2018 – August 2022
+Intermediate in Computer Science (I.CS)
+Hajvery University & Colleges, Sheikhupura (BISE, Lahore)
+August 2016 – August 2018
+Matriculation in Computer Science
+Govt. Comprehensive High School, Sheikhupura (BISE, Lahore)
+August 2014 – August 2016	             		             
+Work EXPERIENCE
+Front-End Developer Intern
+Kodestudio – Sheikhupura, Pakistan
+June 2022 – Present
+Worked on project clones of CNN, a restaurant, and Kayana, focusing on replicating design and functionality.
+Collaborated with teams to implement user-friendly interfaces using React, Tailwind CSS, and Chakra UI.
+Contributed to the development of the KS Project using React, Fuse, Tailwind, MUI, Redux, Axios, and React-Router-Dom.
+Involved in the KS Learning Project using MUI and Next.js (App Router), focusing on creating intuitive UI/UX.
+Front-End Developer
+Dev-KAYANA Mega Project | [Start Date] – Present
+Contributed to the design and development of professional components using Chakra UI.
+Focused on building complex UI components like sign-up/sign-in forms, sidebar, blog, and notes editor.
+Improved coding logic and website functionality through JavaScript and component-based architecture.
+
+ACADEMIC PROJECTS
+Mega Todo Project (Google Keep Clone)
+Designed and implemented a highly responsive and professional UI using Chakra UI and React.
+Created custom components to enhance user interaction and experience.
+E-Commerce Website Admin Page
+Developed a beautiful and functional admin panel for creating, updating, and deleting products.
+Integrated API handling for seamless product management.
+Mega Blog and Notes Editor
+Created a large-scale, professional blog and notes editor component in Chakra UI with React.
+Focused on providing a rich text editing experience for users.
+POSITION OF RESPONSIBILITY
+Society Title |  Society, College                                         		(Date- Present)
+Organised hackathons & conducted sessions for 300+ college students on Web Development related topics.
+ACHIEVEMENTS / HOBBIES
+Mention your achievements
+
