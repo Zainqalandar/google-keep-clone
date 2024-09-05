@@ -21,7 +21,7 @@ import { usePathname } from 'next/navigation';
 
 const LinkItems = [
 	{ name: 'Notes', icon: HiLightBulb, href: '/home' },
-	{ name: 'Edit Notes', icon: MdEditNote, href: '/edit-notes' },
+	{ name: 'Create', icon: MdEditNote, href: '/edit-notes' },
 	{ name: 'Blog', icon: ImBlogger2, href: '/my-blogs' },
 	{ name: 'Reminders', icon: BsFillBellFill, href: '/reminders' },
 	{ name: 'Edit labels', icon: MdModeEdit, href: '/edit-labels' },

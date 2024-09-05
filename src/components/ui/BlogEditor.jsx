@@ -219,47 +219,7 @@ const BlogEditor = ({ blogId }) => {
 
 				<Divider my={6} />
 
-				<HStack spacing={4} mb={6}>
-					<IconButton
-						icon={<FaBold />}
-						aria-label="Bold text"
-						size="lg"
-						colorScheme="blue"
-						variant="outline"
-					/>
-					<IconButton
-						icon={<FaItalic />}
-						aria-label="Italic text"
-						size="lg"
-						colorScheme="blue"
-						variant="outline"
-					/>
-					<IconButton
-						icon={<FaUnderline />}
-						aria-label="Underline text"
-						size="lg"
-						colorScheme="blue"
-						variant="outline"
-					/>
-					<IconButton
-						icon={<LinkIcon />}
-						aria-label="Add link"
-						size="lg"
-						colorScheme="blue"
-						variant="outline"
-					/>
-					<Select
-						placeholder="Heading"
-						size="lg"
-						color={textColor}
-						bg={inputBgColor}
-						borderColor={textColor}
-					>
-						<option>Heading 1</option>
-						<option>Heading 2</option>
-						<option>Heading 3</option>
-					</Select>
-				</HStack>
+				
 
 				<Textarea
 					hidden={true}
